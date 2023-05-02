@@ -13,12 +13,16 @@ public class DBConnection {
     private static String dbPassword;
     private static Connection connection;
 
-    public Connection getConnection() throws SQLException {
+    public static Connection getConnection() {
         if (connection == null) {
             setProperties();
 
-            connection =  DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-            return connection;
+            try {
+                connection =  DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+                return connection;
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         } else {
             return connection;
         }
