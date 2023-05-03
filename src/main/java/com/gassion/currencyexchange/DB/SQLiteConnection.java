@@ -32,7 +32,7 @@ public class SQLiteConnection extends DBConnection{
         Properties properties = new Properties();
 
         try {
-            fis = new FileInputStream("src/main/resources/config.properties");
+            fis = new FileInputStream("src/main/resources/properties/config.properties");
             properties.load(fis);
         } catch (IOException e) {
             throw new RuntimeException(e);
