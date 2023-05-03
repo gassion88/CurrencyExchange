@@ -22,6 +22,7 @@ public class SQLiteConnection extends DBConnection{
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
+
         } else {
             return connection;
         }
@@ -39,11 +40,5 @@ public class SQLiteConnection extends DBConnection{
         }
 
         dbUrl = properties.getProperty("db.url");
-    }
-
-    public static void main(String[] args) {
-        Connection connection1 = new SQLiteConnection().getConnection();
-
-        System.out.println("123");
     }
 }
