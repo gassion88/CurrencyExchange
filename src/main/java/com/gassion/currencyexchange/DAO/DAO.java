@@ -7,5 +7,5 @@ public abstract class DAO <T> {
     public abstract List<T> getAll();
     public abstract void set(T t);
     public abstract void add(T t);
-    public abstract void delete(T t);
+    public abstract void delete(int id);
 }
