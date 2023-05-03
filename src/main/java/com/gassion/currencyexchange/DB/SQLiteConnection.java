@@ -12,7 +12,7 @@ public class SQLiteConnection extends DBConnection{
     private static String dbUrl;
     private static Connection connection;
 
-    public Connection getConnection() {
+    public static Connection getConnection() {
         if (connection == null) {
             setProperties();
 
@@ -28,7 +28,7 @@ public class SQLiteConnection extends DBConnection{
         }
     }
 
-    void setProperties() {
+    static void setProperties() {
         FileInputStream fis;
         Properties properties = new Properties();
 
