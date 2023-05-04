@@ -33,7 +33,7 @@ public class CurrencyDAO extends DAO<Currency>{
 
     @Override
     public List<Currency> getAll() {
-        List<Currency> currencies = new ArrayList<>();
+        List<Currency> currencies;
         String query = String.format(DBUtils.SELECT_ALL , "Currencies");
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
