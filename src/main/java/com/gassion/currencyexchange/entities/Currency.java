@@ -1,5 +1,7 @@
 package com.gassion.currencyexchange.entities;
 
+import com.gassion.currencyexchange.entities.jsonResponse.CurrencyJson;
+
 import java.util.Objects;
 
 public class Currency {
@@ -41,6 +43,10 @@ public class Currency {
 
     public void setSign(String sign) {
         this.sign = sign;
+    }
+
+    public CurrencyJson getJsonPresent() {
+        return new CurrencyJson(getId(), getCode(), getFullName(), getSign());
     }
 
     @Override

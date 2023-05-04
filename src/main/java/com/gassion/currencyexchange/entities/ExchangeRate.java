@@ -1,5 +1,7 @@
 package com.gassion.currencyexchange.entities;
 
+import com.gassion.currencyexchange.entities.jsonResponse.ExchangeRateJson;
+
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -34,6 +36,10 @@ public class ExchangeRate {
 
     public void setRate(BigDecimal rate) {
         this.rate = rate;
+    }
+
+    public ExchangeRateJson exchangeJsonPresent() {
+        return new ExchangeRateJson(getId(), getBaseCurrencyId(), getTargetCurrencyId(), getRate());
     }
 
     @Override
