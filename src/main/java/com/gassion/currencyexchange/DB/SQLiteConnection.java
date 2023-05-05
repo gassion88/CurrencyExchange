@@ -19,10 +19,10 @@ public class SQLiteConnection extends DBConnection{
             setProperties();
 
             try {
-                Class.forName("org.sqlite.JDBC").newInstance();
+                Class.forName("org.sqlite.JDBC");
                 connection =  DriverManager.getConnection(dbUrl);
                 return connection;
-            } catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+            } catch (SQLException | ClassNotFoundException  e) {
                 throw new RuntimeException(e);
             }
 
