@@ -1,10 +1,12 @@
 package com.gassion.currencyexchange.entities;
 
+import com.gassion.currencyexchange.DAO.JsonPresent;
 import com.gassion.currencyexchange.entities.jsonResponse.CurrencyJson;
 
+import java.util.Map;
 import java.util.Objects;
 
-public class Currency {
+public class Currency implements JsonPresent<CurrencyJson> {
     private final int id;
     private String code;
     private String fullName;
@@ -15,6 +17,15 @@ public class Currency {
         this.code = code;
         this.fullName = fullName;
         this.sign = sign;
+    }
+
+    public static Currency currencyFactory(Map<String, String[]> parameterMap) {
+        int id = Integer.parseInt(parameterMap.get("id")[0]);
+        String name = parameterMap.get("name")[0];
+        String code = parameterMap.get("code")[0];
+        String sign = parameterMap.get("sign")[0];
+
+        return new Currency(id, name, code, sign);
     }
 
     public int getId() {
@@ -43,10 +54,6 @@ public class Currency {
 
     public void setSign(String sign) {
         this.sign = sign;
-    }
-
-    public CurrencyJson getJsonPresent() {
-        return new CurrencyJson(getId(), getCode(), getFullName(), getSign());
     }
 
     @Override
@@ -79,5 +86,10 @@ public class Currency {
                 ", fullName='" + fullName + '\'' +
                 ", sign='" + sign + '\'' +
                 '}';
+    }
+
+    @Override
+    public CurrencyJson getJsonPesent() {
+        return new CurrencyJson(getId(), getCode(), getFullName(), getSign());
     }
 }

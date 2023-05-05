@@ -16,10 +16,9 @@ import java.util.List;
 public class CurrencyLogic {
     private static final Gson GSON = new Gson();
     private static final ValidateUtils VALIDATE_UTILS = new ValidateUtils();
-
     public static void getAllCurrencies(HttpServletRequest request, HttpServletResponse response) throws IOException {
         List<Currency> currencies = new CurrencyDAO().getAll();
-        List<CurrencyJson> currenciesJson = ValidateUtils.getJsonFormat(currencies);
+        List<CurrencyJson> currenciesJson = VALIDATE_UTILS.getJsonFormat(currencies);
         String currenciesList = GSON.toJson(currenciesJson);
 
         PrintWriter out = response.getWriter();
