@@ -1,11 +1,14 @@
 package com.gassion.currencyexchange.DB;
 
+import com.gassion.currencyexchange.utils.DBUtils;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.io.FileInputStream;
 import java.util.Properties;
+
 
 public class SQLiteConnection extends DBConnection{
     private static String dbUrl;
@@ -16,11 +19,13 @@ public class SQLiteConnection extends DBConnection{
             setProperties();
 
             try {
+                Class.forName("org.sqlite.JDBC").newInstance();
                 connection =  DriverManager.getConnection(dbUrl);
                 return connection;
-            } catch (SQLException e) {
+            } catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
                 throw new RuntimeException(e);
             }
+
 
         } else {
             return connection;
@@ -30,14 +35,16 @@ public class SQLiteConnection extends DBConnection{
     static void setProperties() {
         FileInputStream fis;
         Properties properties = new Properties();
+        String path = DBUtils.getPathResources("properties/config.properties");
 
         try {
-            fis = new FileInputStream("src/main/resources/properties/config.properties");
+            fis = new FileInputStream(path);
             properties.load(fis);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        dbUrl = properties.getProperty("db.url");
+
+        dbUrl = "jdbc:sqlite:" + DBUtils.getPathResources(properties.getProperty("db.url"));
     }
 }
