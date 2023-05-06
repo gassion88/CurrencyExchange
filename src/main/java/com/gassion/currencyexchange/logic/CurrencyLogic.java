@@ -21,7 +21,7 @@ public class CurrencyLogic {
         List<Currency> currencies = CURRENCY_DAO.getAll();
         List<CurrencyJson> currenciesJson = VALIDATE_UTILS.getJsonFormat(currencies);
         String currenciesList = GSON.toJson(currenciesJson);
-        OutResponse.getCurrencies(response, currenciesList);
+        OutResponse.setResponse(response, HttpServletResponse.SC_OK, currenciesList);
     }
 
     public static void addCurrency(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -37,11 +37,11 @@ public class CurrencyLogic {
             CURRENCY_DAO.add(currency);
             currency = CURRENCY_DAO.get(currency.getCode());
             String currencyJson = GSON.toJson(currency.getJsonPesent());
-            OutResponse.addedCurrency(response, currencyJson);
+            OutResponse.setResponse(response, HttpServletResponse.SC_OK, currencyJson);
         } catch (SQLException e) {
-            OutResponse.constraintUniq(response);
+            OutResponse.setResponse(response, HttpServletResponse.SC_CONFLICT, "Валюта с таким кодом уже существует");
         } catch (Exception s) {
-            OutResponse.errorDB(response);
+            OutResponse.setResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error");
         }
     }
 
@@ -58,11 +58,11 @@ public class CurrencyLogic {
         try {
             currency = CURRENCY_DAO.get(currencyCode);
             String currencyJson = GSON.toJson(currency.getJsonPesent());
-            OutResponse.getCurrencyByCode(response, currencyJson);
+            OutResponse.setResponse(response, HttpServletResponse.SC_OK, currencyJson);
         } catch (SQLException e) {
-            OutResponse.notFoundCurrency(response);
+            OutResponse.setResponse(response, HttpServletResponse.SC_NOT_FOUND, "Валюта не найдена");
         } catch (Exception s) {
-            OutResponse.errorDB(response);
+            OutResponse.setResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error");
         }
     }
 }
