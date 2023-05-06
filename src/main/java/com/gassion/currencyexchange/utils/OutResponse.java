@@ -8,42 +8,10 @@ import java.io.PrintWriter;
 public class OutResponse {
     private static PrintWriter out;
 
-    public static void constraintUniq(HttpServletResponse response) throws IOException {
-        response.setStatus(HttpServletResponse.SC_CONFLICT);
+    public static void setResponse(HttpServletResponse response, int statusCode, String resource) throws IOException {
+        response.setStatus(statusCode);
         out = response.getWriter();
-        out.print("Валюта с таким кодом уже существует");
-        out.flush();
-    }
-
-    public static void errorDB(HttpServletResponse response) throws IOException {
-        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        out = response.getWriter();
-        out.print("Error");
-        out.flush();
-    }
-
-    public static void addedCurrency(HttpServletResponse response, String jsonPresent) throws IOException {
-        out = response.getWriter();
-        out.print(jsonPresent);
-        out.flush();
-    }
-
-    public static void getCurrencies(HttpServletResponse response, String currenciesList) throws IOException {
-        out = response.getWriter();
-        out.print(currenciesList);
-        out.flush();
-    }
-
-    public static void getCurrencyByCode(HttpServletResponse response, String currencyJson) throws IOException {
-        out = response.getWriter();
-        out.print(currencyJson);
-        out.flush();
-    }
-
-    public static void notFoundCurrency(HttpServletResponse response) throws IOException {
-        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-        out = response.getWriter();
-        out.print("Валюта не найдена");
+        out.print(resource);
         out.flush();
     }
 }
