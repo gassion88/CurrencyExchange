@@ -13,21 +13,23 @@ import java.util.List;
 public class CurrencyDAO extends DAO<Currency>{
     Connection connection = DBUtils.connection;
     @Override
-    public Currency get(String code) {
-        Currency currency = null;
+    public Currency get(String code) throws SQLException {
+        List<Currency> currency = null;
         String query = String.format(DBUtils.SELECT , "Currencies", "Code");
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, code);
             ResultSet result = preparedStatement.executeQuery();
 
-            currency = getCurrency(result).get(0);
+            currency = getCurrency(result);
 
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
 
-        return currency;
+        if (currency.size() == 0) {
+            throw new SQLException();
+        }
+
+        return currency.get(0);
     }
 
 
