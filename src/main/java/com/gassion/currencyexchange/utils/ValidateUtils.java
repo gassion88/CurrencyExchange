@@ -29,21 +29,22 @@ public class ValidateUtils {
         PrintWriter out = response.getWriter();
 
         Map<String, String[]> params = request.getParameterMap();
-        String id = request.getParameter("id");
         String name = request.getParameter("name");
         String code = request.getParameter("code");
         String sign = request.getParameter("sign");
 
-        if(id == null || name == null || code == null || sign == null) {
+        if(name == null || code == null || sign == null) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            out.print("Отсутствует нужное поле формы");
+            out.print("Required form field is missing");
             out.flush();
+            return;
         }
 
-        if (params.size() != 4) {
+        if (params.size() != 3) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            out.print("Не верное количество параметров");
+            out.print("Invalid number of parameters");
             out.flush();
+            return;
         }
     }
 }
