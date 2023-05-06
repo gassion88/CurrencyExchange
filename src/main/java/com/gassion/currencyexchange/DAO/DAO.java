@@ -4,7 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public abstract class DAO <T> {
-    public abstract T get(String code);
+    public abstract T get(String code) throws SQLException;
     public abstract List<T> getAll();
     public abstract void set(T t);
     public abstract void add(T t) throws SQLException;
