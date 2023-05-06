@@ -24,5 +24,24 @@ public class CurrencyLogic {
         OutResponse.getCurrencies(response, currenciesList);
     }
 
+    public static void addCurrency(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        VALIDATE_UTILS.addCurrencyRequestValidate(request, response);
 
+        if(!response.getWriter().toString().equals("")) {
+            return;
+        }
+
+        Currency currency  = Currency.currencyFactory(request.getParameterMap());
+
+        try {
+            CURRENCY_DAO.add(currency);
+            currency = CURRENCY_DAO.get(currency.getCode());
+            String currencyJson = GSON.toJson(currency.getJsonPesent());
+            OutResponse.addedCurrency(response, currencyJson);
+        } catch (SQLException e) {
+            OutResponse.constraintUniq(response);
+        } catch (Exception s) {
+            OutResponse.errorDB(response);
+        }
+    }
 }
