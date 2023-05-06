@@ -13,12 +13,12 @@ import java.util.List;
 public class CurrencyDAO extends DAO<Currency>{
     Connection connection = DBUtils.connection;
     @Override
-    public Currency get(int id) {
+    public Currency get(String code) {
         Currency currency = null;
-        String query = String.format(DBUtils.SELECT , "Currencies", "ID");
+        String query = String.format(DBUtils.SELECT , "Currencies", "Code");
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, id);
+            preparedStatement.setString(1, code);
             ResultSet result = preparedStatement.executeQuery();
 
             currency = getCurrency(result).get(0);
@@ -66,7 +66,7 @@ public class CurrencyDAO extends DAO<Currency>{
     }
 
     @Override
-    public void add(Currency currency) {
+    public void add(Currency currency) throws SQLException {
         String query = String.format(DBUtils.INSERT , "Currencies", "Code", "FullName", "Sign");
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -75,9 +75,6 @@ public class CurrencyDAO extends DAO<Currency>{
             preparedStatement.setString(3, currency.getSign());
 
             preparedStatement.execute();
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
     }
 
