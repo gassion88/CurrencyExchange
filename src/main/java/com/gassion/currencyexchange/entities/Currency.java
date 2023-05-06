@@ -20,12 +20,11 @@ public class Currency implements JsonPresent<CurrencyJson> {
     }
 
     public static Currency currencyFactory(Map<String, String[]> parameterMap) {
-        int id = Integer.parseInt(parameterMap.get("id")[0]);
         String name = parameterMap.get("name")[0];
         String code = parameterMap.get("code")[0];
         String sign = parameterMap.get("sign")[0];
 
-        return new Currency(id, name, code, sign);
+        return new Currency(0, name, code, sign);
     }
 
     public int getId() {
