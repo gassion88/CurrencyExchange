@@ -4,6 +4,7 @@ import com.gassion.currencyexchange.DAO.JsonPresent;
 import com.gassion.currencyexchange.entities.jsonResponse.ExchangeRateJson;
 
 import java.math.BigDecimal;
+import java.util.Map;
 import java.util.Objects;
 
 public class ExchangeRate implements JsonPresent<ExchangeRateJson> {
@@ -17,6 +18,14 @@ public class ExchangeRate implements JsonPresent<ExchangeRateJson> {
         this.baseCurrencyId = baseCurrencyId;
         this.targetCurrencyId = targetCurrencyId;
         this.rate = rate;
+    }
+
+    public static ExchangeRate factory(Map<String, String[]> parameterMap) {
+        int baseCurrencyId = Integer.parseInt(parameterMap.get("baseCurrencyId")[0]);
+        int targetCurrencyId = Integer.parseInt(parameterMap.get("targetCurrencyId")[0]);
+        BigDecimal rate = BigDecimal.valueOf(Long.parseLong(parameterMap.get("rate")[0]));
+
+        return new ExchangeRate(0, baseCurrencyId, targetCurrencyId, rate);
     }
 
     public int getId() {
