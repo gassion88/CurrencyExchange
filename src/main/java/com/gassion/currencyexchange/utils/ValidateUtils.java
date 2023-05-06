@@ -47,4 +47,28 @@ public class ValidateUtils {
             return;
         }
     }
+
+    public void getCurrencyByCodeRequestValidate(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter out = response.getWriter();
+
+        String pathInfo = request.getPathInfo();
+        String[] pathParts = pathInfo.split("/");
+        String CurrencyCode = pathParts[1];
+
+        if(CurrencyCode == null) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            out.print("Код валюты отсутствует в адресе");
+            out.flush();
+            return;
+        }
+
+        if (pathParts.length != 2) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            out.print("Invalid number of parameters");
+            out.flush();
+            return;
+        }
+    }
 }

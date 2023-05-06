@@ -52,6 +52,17 @@ public class CurrencyLogic {
             return;
         }
 
-        Currency currency  = new CurrencyDAO().get(request.getPathInfo().split("/")[1]);
+        String currencyCode  = request.getPathInfo().split("/")[1];
+        Currency currency;
+
+        try {
+            currency = CURRENCY_DAO.get(currencyCode);
+            String currencyJson = GSON.toJson(currency.getJsonPesent());
+            OutResponse.getCurrencyByCode(response, currencyJson);
+        } catch (SQLException e) {
+            OutResponse.notFoundCurrency(response);
+        } catch (Exception s) {
+            OutResponse.errorDB(response);
+        }
     }
 }

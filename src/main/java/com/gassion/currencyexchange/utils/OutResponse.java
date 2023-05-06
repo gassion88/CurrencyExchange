@@ -33,4 +33,17 @@ public class OutResponse {
         out.print(currenciesList);
         out.flush();
     }
+
+    public static void getCurrencyByCode(HttpServletResponse response, String currencyJson) throws IOException {
+        out = response.getWriter();
+        out.print(currencyJson);
+        out.flush();
+    }
+
+    public static void notFoundCurrency(HttpServletResponse response) throws IOException {
+        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        out = response.getWriter();
+        out.print("Валюта не найдена");
+        out.flush();
+    }
 }
