@@ -27,7 +27,7 @@ public class CurrencyLogic {
     public static void addCurrency(HttpServletRequest request, HttpServletResponse response) throws IOException {
         VALIDATE_UTILS.addCurrencyRequestValidate(request, response);
 
-        if(!response.getWriter().toString().equals("")) {
+        if(response.getStatus() != 200) {
             return;
         }
 
@@ -43,5 +43,15 @@ public class CurrencyLogic {
         } catch (Exception s) {
             OutResponse.errorDB(response);
         }
+    }
+
+    public static void getCurrencyByCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        VALIDATE_UTILS.getCurrencyByCodeRequestValidate(request, response);
+
+        if(response.getStatus() != 200) {
+            return;
+        }
+
+        Currency currency  = new CurrencyDAO().get(request.getPathInfo().split("/")[1]);
     }
 }

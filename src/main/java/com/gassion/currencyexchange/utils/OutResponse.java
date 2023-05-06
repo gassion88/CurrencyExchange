@@ -23,14 +23,12 @@ public class OutResponse {
     }
 
     public static void addedCurrency(HttpServletResponse response, String jsonPresent) throws IOException {
-        response.setStatus(HttpServletResponse.SC_OK);
         out = response.getWriter();
         out.print(jsonPresent);
         out.flush();
     }
 
     public static void getCurrencies(HttpServletResponse response, String currenciesList) throws IOException {
-        response.setStatus(HttpServletResponse.SC_OK);
         out = response.getWriter();
         out.print(currenciesList);
         out.flush();
