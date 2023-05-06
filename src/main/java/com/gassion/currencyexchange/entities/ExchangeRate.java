@@ -1,11 +1,12 @@
 package com.gassion.currencyexchange.entities;
 
+import com.gassion.currencyexchange.DAO.JsonPresent;
 import com.gassion.currencyexchange.entities.jsonResponse.ExchangeRateJson;
 
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class ExchangeRate {
+public class ExchangeRate implements JsonPresent<ExchangeRateJson> {
     private final int id;
     private final int baseCurrencyId;
     private final int targetCurrencyId;
@@ -38,10 +39,6 @@ public class ExchangeRate {
         this.rate = rate;
     }
 
-    public ExchangeRateJson exchangeJsonPresent() {
-        return new ExchangeRateJson(getId(), getBaseCurrencyId(), getTargetCurrencyId(), getRate());
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -72,5 +69,10 @@ public class ExchangeRate {
                 ", targetCurrencyId=" + targetCurrencyId +
                 ", rate=" + rate +
                 '}';
+    }
+
+    @Override
+    public ExchangeRateJson getJsonPesent() {
+        return new ExchangeRateJson(getId(), getBaseCurrencyId(), getTargetCurrencyId(), getRate());
     }
 }
