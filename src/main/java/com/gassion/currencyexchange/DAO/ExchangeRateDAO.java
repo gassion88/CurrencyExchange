@@ -19,8 +19,9 @@ public class ExchangeRateDAO extends DAO<ExchangeRate>{
 
         ExchangeRate exchangeRate = null;
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(DBUtils.SELECT)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(DBUtils.SELECT_EXCHANGE_RATE)) {
             preparedStatement.setString(1, code);
+            preparedStatement.setString(2, code);
             ResultSet result = preparedStatement.executeQuery();
 
             exchangeRate = getExchangeRate(result).get(0);
