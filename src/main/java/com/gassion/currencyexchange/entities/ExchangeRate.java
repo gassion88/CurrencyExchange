@@ -25,7 +25,7 @@ public class ExchangeRate implements JsonPresent<ExchangeRateJson> {
     public static ExchangeRate factory(Map<String, String[]> parameterMap) {
         String baseCurrencyCode = parameterMap.get("baseCurrencyCode")[0];
         String targetCurrencyCode = parameterMap.get("targetCurrencyCode")[0];
-        BigDecimal rate = BigDecimal.valueOf(Long.parseLong(parameterMap.get("rate")[0]));
+        BigDecimal rate = BigDecimal.valueOf(Double.parseDouble(parameterMap.get("rate")[0]));
 
         Currency baseCurrency = null;
         Currency targetCurrency = null;
