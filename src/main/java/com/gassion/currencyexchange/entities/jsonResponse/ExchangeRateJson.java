@@ -4,14 +4,14 @@ import java.math.BigDecimal;
 
 public class ExchangeRateJson {
     private final int id;
-    private final int baseCurrencyId;
-    private final int targetCurrencyId;
+    private CurrencyJson baseCurrency;
+    private CurrencyJson targetCurrency;
     private BigDecimal rate;
 
-    public ExchangeRateJson(int id, int baseCurrencyId, int targetCurrencyId, BigDecimal rate) {
+    public ExchangeRateJson(int id, CurrencyJson baseCurrency, CurrencyJson targetCurrency, BigDecimal rate) {
         this.id = id;
-        this.baseCurrencyId = baseCurrencyId;
-        this.targetCurrencyId = targetCurrencyId;
+        this.baseCurrency = baseCurrency;
+        this.targetCurrency = targetCurrency;
         this.rate = rate;
     }
 
@@ -19,12 +19,20 @@ public class ExchangeRateJson {
         return id;
     }
 
-    public int getBaseCurrencyId() {
-        return baseCurrencyId;
+    public CurrencyJson getBaseCurrency() {
+        return baseCurrency;
     }
 
-    public int getTargetCurrencyId() {
-        return targetCurrencyId;
+    public CurrencyJson getTargetCurrency() {
+        return targetCurrency;
+    }
+
+    public void setBaseCurrency(CurrencyJson baseCurrency) {
+        this.baseCurrency = baseCurrency;
+    }
+
+    public void setTargetCurrency(CurrencyJson targetCurrency) {
+        this.targetCurrency = targetCurrency;
     }
 
     public BigDecimal getRate() {
