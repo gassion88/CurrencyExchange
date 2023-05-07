@@ -1,8 +1,7 @@
 package com.gassion.currencyexchange.utils;
 
 import com.gassion.currencyexchange.DAO.JsonPresent;
-import com.gassion.currencyexchange.entities.Currency;
-import com.gassion.currencyexchange.entities.jsonResponse.CurrencyJson;
+import com.gassion.currencyexchange.entities.ExchangeRate;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -70,5 +69,29 @@ public class ValidateUtils {
             out.flush();
             return;
         }
+    }
+
+    public void addExchangeRateRequestValidate(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter out = response.getWriter();
+
+        Map<String, String[]> params = request.getParameterMap();
+        String baseCurrencyCode = request.getParameter("baseCurrencyCode");
+        String targetCurrencyCode = request.getParameter("targetCurrencyCode");
+        String rate = request.getParameter("rate");
+
+        if(baseCurrencyCode == null || targetCurrencyCode == null || rate == null) {
+            OutResponse.setResponse(response, HttpServletResponse.SC_BAD_REQUEST, "Required form field is missing");
+
+            return;
+        }
+
+        if (params.size() != 3) {
+            OutResponse.setResponse(response, HttpServletResponse.SC_BAD_REQUEST, "Invalid number of parameters");
+
+            return;
+        }
+
     }
 }

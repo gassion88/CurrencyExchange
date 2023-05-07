@@ -2,6 +2,7 @@ package com.gassion.currencyexchange.entities;
 
 import com.gassion.currencyexchange.DAO.CurrencyDAO;
 import com.gassion.currencyexchange.DAO.JsonPresent;
+import com.gassion.currencyexchange.entities.jsonResponse.CurrencyJson;
 import com.gassion.currencyexchange.entities.jsonResponse.ExchangeRateJson;
 
 import java.math.BigDecimal;
@@ -93,6 +94,15 @@ public class ExchangeRate implements JsonPresent<ExchangeRateJson> {
 
     @Override
     public ExchangeRateJson getJsonPesent() {
-        return new ExchangeRateJson(getId(), getBaseCurrencyId(), getTargetCurrencyId(), getRate());
+        CurrencyJson baseCurrency = null;
+        CurrencyJson targetCurrency = null;
+        try {
+            baseCurrency = new CurrencyDAO().getById(getBaseCurrencyId()).getJsonPesent();
+            targetCurrency = new CurrencyDAO().getById(getTargetCurrencyId()).getJsonPesent();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return new ExchangeRateJson(getId(), baseCurrency, targetCurrency, getRate());
     }
 }
