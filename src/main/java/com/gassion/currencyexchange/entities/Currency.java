@@ -24,7 +24,7 @@ public class Currency implements JsonPresent<CurrencyJson> {
         String code = parameterMap.get("code")[0];
         String sign = parameterMap.get("sign")[0];
 
-        return new Currency(0, name, code, sign);
+        return new Currency(0, code, name, sign);
     }
 
     public int getId() {

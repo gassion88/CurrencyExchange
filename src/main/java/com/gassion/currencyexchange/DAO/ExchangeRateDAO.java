@@ -9,23 +9,21 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.List;
 
 public class ExchangeRateDAO extends DAO<ExchangeRate>{
     Connection connection = DBUtils.connection;
     @Override
-    public ExchangeRate get(int id) {
-        ExchangeRate exchangeRate = null;
-        String query = String.format(DBUtils.SELECT , "ExchangeRates", "ID");
+    public ExchangeRate get(String code) throws SQLException{
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, id);
+        ExchangeRate exchangeRate = null;
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(DBUtils.SELECT)) {
+            preparedStatement.setString(1, code);
             ResultSet result = preparedStatement.executeQuery();
 
             exchangeRate = getExchangeRate(result).get(0);
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
 
         return exchangeRate;
@@ -66,7 +64,7 @@ public class ExchangeRateDAO extends DAO<ExchangeRate>{
     }
 
     @Override
-    public void add(ExchangeRate exchangeRate) {
+    public void add(ExchangeRate exchangeRate) throws SQLException{
         String query = String.format(DBUtils.INSERT , "ExchangeRates", "BaseCurrencyId", "TargetCurrencyId", "Rate");
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -75,9 +73,6 @@ public class ExchangeRateDAO extends DAO<ExchangeRate>{
             preparedStatement.setBigDecimal(3, exchangeRate.getRate());
 
             preparedStatement.execute();
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
     }
 
