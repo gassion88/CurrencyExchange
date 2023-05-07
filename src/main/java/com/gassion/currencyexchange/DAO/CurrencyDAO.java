@@ -32,6 +32,25 @@ public class CurrencyDAO extends DAO<Currency>{
         return currency.get(0);
     }
 
+    public Currency getById(int id) throws SQLException {
+        List<Currency> currency = null;
+        String query = String.format(DBUtils.SELECT , "Currencies", "ID");
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, id);
+            ResultSet result = preparedStatement.executeQuery();
+
+            currency = getCurrency(result);
+
+        }
+
+        if (currency.size() == 0) {
+            throw new SQLException();
+        }
+
+        return currency.get(0);
+    }
+
 
     @Override
     public List<Currency> getAll() {
