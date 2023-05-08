@@ -1,7 +1,6 @@
 package com.gassion.currencyexchange.utils;
 
 import com.gassion.currencyexchange.DAO.JsonPresent;
-import com.gassion.currencyexchange.entities.ExchangeRate;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -92,6 +91,28 @@ public class ValidateUtils {
 
             return;
         }
-
     }
+
+    public static void getExchangeRateByCodeValidate(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter out = response.getWriter();
+
+        String pathInfo = request.getPathInfo();
+        String[] pathParts = pathInfo.split("/");
+        String CurrencyCode = pathParts[1];
+
+        if(CurrencyCode == null) {
+            OutResponse.setResponse(response, HttpServletResponse.SC_BAD_REQUEST, "Код валюты отсутствует в адресе");
+
+            return;
+        }
+
+        if (pathParts.length != 2) {
+            OutResponse.setResponse(response, HttpServletResponse.SC_BAD_REQUEST, "Invalid number of parameters");
+
+            return;
+        }
+    }
+
 }
