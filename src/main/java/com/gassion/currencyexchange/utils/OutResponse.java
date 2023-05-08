@@ -9,6 +9,8 @@ public class OutResponse {
     private static PrintWriter out;
 
     public static void setResponse(HttpServletResponse response, int statusCode, String resource) throws IOException {
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
         response.setStatus(statusCode);
         out = response.getWriter();
         out.print(resource);

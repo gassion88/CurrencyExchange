@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -21,28 +22,18 @@ public class ValidateUtils {
         return currencyJson;
     }
 
-    public void addCurrencyRequestValidate(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        PrintWriter out = response.getWriter();
-
+    public void addCurrencyRequestValidate(HttpServletRequest request) throws SQLException {
         Map<String, String[]> params = request.getParameterMap();
         String name = request.getParameter("name");
         String code = request.getParameter("code");
         String sign = request.getParameter("sign");
 
         if(name == null || code == null || sign == null) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            out.print("Required form field is missing");
-            out.flush();
-            return;
+            throw new SQLException("Required form field is missing", "Error", HttpServletResponse.SC_BAD_REQUEST);
         }
 
         if (params.size() != 3) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            out.print("Invalid number of parameters");
-            out.flush();
-            return;
+            throw new SQLException("Invalid number of parameters", "Error", HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 

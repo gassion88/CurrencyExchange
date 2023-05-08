@@ -18,28 +18,32 @@ public class CurrencyLogic {
     private static final ValidateUtils VALIDATE_UTILS = new ValidateUtils();
     private static final CurrencyDAO CURRENCY_DAO = new CurrencyDAO();
     public static void getAllCurrencies(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        List<Currency> currencies = CURRENCY_DAO.getAll();
-        List<CurrencyJson> currenciesJson = VALIDATE_UTILS.getJsonFormat(currencies);
-        String currenciesList = GSON.toJson(currenciesJson);
-        OutResponse.setResponse(response, HttpServletResponse.SC_OK, currenciesList);
+        try {
+            List<Currency> currencies = CURRENCY_DAO.getAll();
+            List<CurrencyJson> currenciesJson = VALIDATE_UTILS.getJsonFormat(currencies);
+            String currenciesList = GSON.toJson(currenciesJson);
+            OutResponse.setResponse(response, HttpServletResponse.SC_OK, currenciesList);
+        } catch (SQLException e){
+            OutResponse.setResponse(response, HttpServletResponse.SC_CONFLICT, "Error");
+        }
     }
 
     public static void addCurrency(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        VALIDATE_UTILS.addCurrencyRequestValidate(request, response);
-
-        if(response.getStatus() != 200) {
-            return;
-        }
-
-        Currency currency  = Currency.currencyFactory(request.getParameterMap());
-
         try {
+            VALIDATE_UTILS.addCurrencyRequestValidate(request);
+
+            Currency currency  = Currency.currencyFactory(request.getParameterMap());
             CURRENCY_DAO.add(currency);
             currency = CURRENCY_DAO.get(currency.getCode());
+
             String currencyJson = GSON.toJson(currency.getJsonPesent());
             OutResponse.setResponse(response, HttpServletResponse.SC_OK, currencyJson);
         } catch (SQLException e) {
-            OutResponse.setResponse(response, HttpServletResponse.SC_CONFLICT, "Валюта с таким кодом уже существует");
+            if (e.getErrorCode() == HttpServletResponse.SC_BAD_REQUEST) {
+                OutResponse.setResponse(response, e.getErrorCode(), e.getMessage());
+            } else {
+                OutResponse.setResponse(response, HttpServletResponse.SC_CONFLICT, "Валюта с таким кодом уже существует");
+            }
         } catch (Exception s) {
             OutResponse.setResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error");
         }

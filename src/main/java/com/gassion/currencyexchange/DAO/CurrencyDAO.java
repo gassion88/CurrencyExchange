@@ -53,7 +53,7 @@ public class CurrencyDAO extends DAO<Currency>{
 
 
     @Override
-    public List<Currency> getAll() {
+    public List<Currency> getAll() throws SQLException {
         List<Currency> currencies;
         String query = String.format(DBUtils.SELECT_ALL , "Currencies");
 
@@ -62,8 +62,6 @@ public class CurrencyDAO extends DAO<Currency>{
 
             currencies = getCurrency(result);
 
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
 
         return currencies;
