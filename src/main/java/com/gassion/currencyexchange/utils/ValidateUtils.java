@@ -51,48 +51,32 @@ public class ValidateUtils {
         }
     }
 
-    public void addExchangeRateRequestValidate(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        PrintWriter out = response.getWriter();
-
+    public void addExchangeRateRequestValidate(HttpServletRequest request) throws SQLException {
         Map<String, String[]> params = request.getParameterMap();
         String baseCurrencyCode = request.getParameter("baseCurrencyCode");
         String targetCurrencyCode = request.getParameter("targetCurrencyCode");
         String rate = request.getParameter("rate");
 
         if(baseCurrencyCode == null || targetCurrencyCode == null || rate == null) {
-            OutResponse.setResponse(response, HttpServletResponse.SC_BAD_REQUEST, "Required form field is missing");
-
-            return;
+            throw new SQLException("Required form field is missing", "Error", HttpServletResponse.SC_BAD_REQUEST);
         }
 
         if (params.size() != 3) {
-            OutResponse.setResponse(response, HttpServletResponse.SC_BAD_REQUEST, "Invalid number of parameters");
-
-            return;
+            throw new SQLException("Invalid number of parameters", "Error", HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 
-    public static void getExchangeRateByCodeValidate(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        PrintWriter out = response.getWriter();
-
+    public static void getExchangeRateByCodeValidate(HttpServletRequest request) throws SQLException {
         String pathInfo = request.getPathInfo();
         String[] pathParts = pathInfo.split("/");
         String CurrencyCode = pathParts[1];
 
         if(CurrencyCode == null) {
-            OutResponse.setResponse(response, HttpServletResponse.SC_BAD_REQUEST, "Код валюты отсутствует в адресе");
-
-            return;
+            throw new SQLException("Код валюты отсутствует в адресе", "Error", HttpServletResponse.SC_BAD_REQUEST);
         }
 
         if (pathParts.length != 2) {
-            OutResponse.setResponse(response, HttpServletResponse.SC_BAD_REQUEST, "Invalid number of parameters");
-
-            return;
+            throw new SQLException("Invalid number of parameters", "Error", HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 

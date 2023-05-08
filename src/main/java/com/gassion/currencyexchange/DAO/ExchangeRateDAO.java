@@ -31,7 +31,7 @@ public class ExchangeRateDAO extends DAO<ExchangeRate>{
     }
 
     @Override
-    public List<ExchangeRate> getAll() {
+    public List<ExchangeRate> getAll() throws SQLException{
         List<ExchangeRate> exchangeRates = new ArrayList<>();
         String query = String.format(DBUtils.SELECT_ALL , "ExchangeRates");
 
@@ -40,8 +40,6 @@ public class ExchangeRateDAO extends DAO<ExchangeRate>{
 
             exchangeRates = getExchangeRate(result);
 
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
 
         return exchangeRates;
