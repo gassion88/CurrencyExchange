@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -66,7 +67,31 @@ public class ExchangeRateLogic {
             if (e.getErrorCode() == HttpServletResponse.SC_BAD_REQUEST) {
                 OutResponse.setResponse(response, e.getErrorCode(), e.getMessage());
             } else {
-                OutResponse.setResponse(response, HttpServletResponse.SC_CONFLICT, "Currency pair with this code already exists");
+                OutResponse.setResponse(response, HttpServletResponse.SC_NOT_FOUND, "Currency pair with this code already exists");
+            }
+        } catch (Exception s) {
+            OutResponse.setResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error");
+        }
+    }
+
+    public static void patchExchangeRateByCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        try {
+            VALIDATE_UTILS.patchExchangeRateByCodeValidate(request);
+
+            String exchangeRateCode = request.getPathInfo().split("/")[1];
+            ExchangeRate exchangeRate = EXCHANGE_RATE_DAO.get(exchangeRateCode);
+            BigDecimal newRate = BigDecimal.valueOf(Double.parseDouble(request.getParameterMap().get("rate")[0]));
+            exchangeRate.setRate(newRate);
+            EXCHANGE_RATE_DAO.set(exchangeRate);
+
+            ExchangeRateJson exchangeRateJson = exchangeRate.getJsonPesent();
+            String exchangeRateJsonString = GSON.toJson(exchangeRateJson);
+            OutResponse.setResponse(response, HttpServletResponse.SC_OK, exchangeRateJsonString);
+        } catch (SQLException e) {
+            if (e.getErrorCode() == HttpServletResponse.SC_BAD_REQUEST) {
+                OutResponse.setResponse(response, e.getErrorCode(), e.getMessage());
+            } else {
+                OutResponse.setResponse(response, HttpServletResponse.SC_NOT_FOUND, "Currency pair with this code already exists");
             }
         } catch (Exception s) {
             OutResponse.setResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error");

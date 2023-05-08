@@ -4,8 +4,6 @@ import com.gassion.currencyexchange.DAO.JsonPresent;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -80,4 +78,17 @@ public class ValidateUtils {
         }
     }
 
+    public void patchExchangeRateByCodeValidate(HttpServletRequest request) throws SQLException {
+        String pathInfo = request.getPathInfo();
+        String[] pathParts = pathInfo.split("/");
+        String CurrencyCode = pathParts[1];
+
+        if(CurrencyCode == null) {
+            throw new SQLException("Required form field is missing", "Error", HttpServletResponse.SC_BAD_REQUEST);
+        }
+
+        if (pathParts.length != 2) {
+            throw new SQLException("Invalid number of parameters", "Error", HttpServletResponse.SC_BAD_REQUEST);
+        }
+    }
 }
