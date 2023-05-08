@@ -91,4 +91,18 @@ public class ValidateUtils {
             throw new SQLException("Invalid number of parameters", "Error", HttpServletResponse.SC_BAD_REQUEST);
         }
     }
+
+    public void deleteCurrencyByCodeValidate(HttpServletRequest request) throws SQLException {
+        String pathInfo = request.getPathInfo();
+        String[] pathParts = pathInfo.split("/");
+        String CurrencyCode = pathParts[1];
+
+        if(CurrencyCode == null) {
+            throw new SQLException("Required form field is missing", "Error", HttpServletResponse.SC_BAD_REQUEST);
+        }
+
+        if (pathParts.length != 2) {
+            throw new SQLException("Invalid number of parameters", "Error", HttpServletResponse.SC_BAD_REQUEST);
+        }
+    }
 }

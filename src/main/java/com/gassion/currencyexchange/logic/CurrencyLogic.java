@@ -40,10 +40,10 @@ public class CurrencyLogic {
             String currencyJson = GSON.toJson(currency.getJsonPesent());
             OutResponse.setResponse(response, HttpServletResponse.SC_OK, currencyJson);
         } catch (SQLException e) {
-            if (e.getErrorCode() == HttpServletResponse.SC_BAD_REQUEST) {
+            if (e.getErrorCode() == HttpServletResponse.SC_BAD_REQUEST || e.getErrorCode() == HttpServletResponse.SC_NOT_FOUND) {
                 OutResponse.setResponse(response, e.getErrorCode(), e.getMessage());
             } else {
-                OutResponse.setResponse(response, HttpServletResponse.SC_CONFLICT, "Валюта с таким кодом уже существует");
+                OutResponse.setResponse(response, HttpServletResponse.SC_CONFLICT, "Currency with this code already exists");
             }
         } catch (Exception s) {
             OutResponse.setResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error");
@@ -60,6 +60,29 @@ public class CurrencyLogic {
             String currencyJson = GSON.toJson(currency.getJsonPesent());
             OutResponse.setResponse(response, HttpServletResponse.SC_OK, currencyJson);
         } catch (SQLException e) {
+            if (e.getErrorCode() == HttpServletResponse.SC_BAD_REQUEST) {
+                OutResponse.setResponse(response, e.getErrorCode(), e.getMessage());
+            } else {
+                OutResponse.setResponse(response, HttpServletResponse.SC_NOT_FOUND, "Currency not found");
+            }
+        } catch (Exception s) {
+            OutResponse.setResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error");
+        }
+    }
+
+    public static void deleteCurrencyByCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        try {
+            VALIDATE_UTILS.deleteCurrencyByCodeValidate(request);
+
+            String currencyCode = request.getPathInfo().split("/")[1];
+            Currency currency = CURRENCY_DAO.get(currencyCode);
+
+            new CurrencyDAO().delete(currency.getId());
+
+            CurrencyJson currencyJson = currency.getJsonPesent();
+            String currencyJsonString = GSON.toJson(currencyJson);
+            OutResponse.setResponse(response, HttpServletResponse.SC_OK, "Deleted \n" + currencyJsonString);
+        }catch (SQLException e) {
             if (e.getErrorCode() == HttpServletResponse.SC_BAD_REQUEST) {
                 OutResponse.setResponse(response, e.getErrorCode(), e.getMessage());
             } else {
