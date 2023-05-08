@@ -50,21 +50,20 @@ public class CurrencyLogic {
     }
 
     public static void getCurrencyByCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        VALIDATE_UTILS.getCurrencyByCodeRequestValidate(request, response);
-
-        if(response.getStatus() != 200) {
-            return;
-        }
-
-        String currencyCode  = request.getPathInfo().split("/")[1];
-        Currency currency;
-
         try {
-            currency = CURRENCY_DAO.get(currencyCode);
+            VALIDATE_UTILS.getCurrencyByCodeRequestValidate(request);
+
+            String currencyCode  = request.getPathInfo().split("/")[1];
+            Currency currency = CURRENCY_DAO.get(currencyCode);
+
             String currencyJson = GSON.toJson(currency.getJsonPesent());
             OutResponse.setResponse(response, HttpServletResponse.SC_OK, currencyJson);
         } catch (SQLException e) {
-            OutResponse.setResponse(response, HttpServletResponse.SC_NOT_FOUND, "Валюта не найдена");
+            if (e.getErrorCode() == HttpServletResponse.SC_BAD_REQUEST) {
+                OutResponse.setResponse(response, e.getErrorCode(), e.getMessage());
+            } else {
+                OutResponse.setResponse(response, HttpServletResponse.SC_NOT_FOUND, "Валюта не найдена");
+            }
         } catch (Exception s) {
             OutResponse.setResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error");
         }
