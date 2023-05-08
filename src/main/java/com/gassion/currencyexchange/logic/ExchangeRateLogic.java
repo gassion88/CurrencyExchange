@@ -2,6 +2,7 @@ package com.gassion.currencyexchange.logic;
 
 import com.gassion.currencyexchange.DAO.ExchangeRateDAO;
 import com.gassion.currencyexchange.entities.ExchangeRate;
+import com.gassion.currencyexchange.entities.factories.ExchangeRateFactory;
 import com.gassion.currencyexchange.entities.jsonResponse.ExchangeRateJson;
 import com.gassion.currencyexchange.utils.OutResponse;
 import com.gassion.currencyexchange.utils.ValidateUtils;
@@ -32,7 +33,7 @@ public class ExchangeRateLogic {
     public static void addExchangeRate(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             VALIDATE_UTILS.addExchangeRateRequestValidate(request);
-            ExchangeRate exchangeRate = ExchangeRate.factory(request.getParameterMap());
+            ExchangeRate exchangeRate = ExchangeRateFactory.getInUrl(request.getParameterMap());
             String exchangeRateCode = request.getParameterMap().get("baseCurrencyCode")[0] + request.getParameterMap().get("targetCurrencyCode")[0];
 
             EXCHANGE_RATE_DAO.add(exchangeRate);

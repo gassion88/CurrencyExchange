@@ -2,6 +2,7 @@ package com.gassion.currencyexchange.logic;
 
 import com.gassion.currencyexchange.DAO.CurrencyDAO;
 import com.gassion.currencyexchange.entities.Currency;
+import com.gassion.currencyexchange.entities.factories.CurrencyFactory;
 import com.gassion.currencyexchange.entities.jsonResponse.CurrencyJson;
 import com.gassion.currencyexchange.utils.OutResponse;
 import com.gassion.currencyexchange.utils.ValidateUtils;
@@ -32,7 +33,7 @@ public class CurrencyLogic {
         try {
             VALIDATE_UTILS.addCurrencyRequestValidate(request);
 
-            Currency currency  = Currency.currencyFactory(request.getParameterMap());
+            Currency currency  = CurrencyFactory.getInUrl(request.getParameterMap());
             CURRENCY_DAO.add(currency);
             currency = CURRENCY_DAO.get(currency.getCode());
 

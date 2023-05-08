@@ -19,14 +19,6 @@ public class Currency implements JsonPresent<CurrencyJson> {
         this.sign = sign;
     }
 
-    public static Currency currencyFactory(Map<String, String[]> parameterMap) {
-        String name = parameterMap.get("name")[0];
-        String code = parameterMap.get("code")[0];
-        String sign = parameterMap.get("sign")[0];
-
-        return new Currency(0, code, name, sign);
-    }
-
     public int getId() {
         return id;
     }
