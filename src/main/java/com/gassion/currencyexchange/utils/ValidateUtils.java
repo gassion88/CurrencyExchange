@@ -4,6 +4,7 @@ import com.gassion.currencyexchange.DAO.JsonPresent;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -105,4 +106,20 @@ public class ValidateUtils {
             throw new SQLException("Invalid number of parameters", "Error", HttpServletResponse.SC_BAD_REQUEST);
         }
     }
+
+    public static void exchangeValidate(HttpServletRequest request) throws SQLException{
+        Map<String, String[]> params = request.getParameterMap();
+        String from = request.getParameter("from");
+        String to = request.getParameter("to");
+        BigDecimal amount = BigDecimal.valueOf(Double.parseDouble(request.getParameter("amount")));
+
+        if(from == null || to == null || amount.equals(BigDecimal.valueOf(0))) {
+            throw new SQLException("Required form field is missing", "Error", HttpServletResponse.SC_BAD_REQUEST);
+        }
+
+        if (params.size() != 3) {
+            throw new SQLException("Invalid number of parameters", "Error", HttpServletResponse.SC_BAD_REQUEST);
+        }
+    }
+
 }
