@@ -24,6 +24,7 @@ public class ExchangeRateServlet extends HttpServlet {
         String method = request.getMethod();
         if (method.equals("PATCH")) {
             this.doPatch(request, response);
+            return;
         }
 
         super.service(request, response);

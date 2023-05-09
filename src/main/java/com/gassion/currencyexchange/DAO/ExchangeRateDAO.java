@@ -2,6 +2,7 @@ package com.gassion.currencyexchange.DAO;
 
 import com.gassion.currencyexchange.entities.ExchangeRate;
 import com.gassion.currencyexchange.utils.DBUtils;
+import jakarta.servlet.http.HttpServletResponse;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -17,17 +18,20 @@ public class ExchangeRateDAO extends DAO<ExchangeRate>{
     @Override
     public ExchangeRate get(String code) throws SQLException{
 
-        ExchangeRate exchangeRate = null;
+        List<ExchangeRate> exchangeRate = null;
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(DBUtils.SELECT_EXCHANGE_RATE)) {
             preparedStatement.setString(1, code);
             preparedStatement.setString(2, code);
             ResultSet result = preparedStatement.executeQuery();
 
-            exchangeRate = getExchangeRate(result).get(0);
+            exchangeRate = getExchangeRate(result);
         }
 
-        return exchangeRate;
+        if (exchangeRate.size() == 0) {
+            return null;
+        }
+        return exchangeRate.get(0);
     }
 
     @Override

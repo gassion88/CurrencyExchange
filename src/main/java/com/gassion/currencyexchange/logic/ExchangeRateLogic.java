@@ -40,6 +40,10 @@ public class ExchangeRateLogic {
             EXCHANGE_RATE_DAO.add(exchangeRate);
             exchangeRate = EXCHANGE_RATE_DAO.get(exchangeRateCode);
 
+            if (exchangeRate == null) {
+                throw new SQLException("Currency pair with this code already exists", "Error", HttpServletResponse.SC_NOT_FOUND);
+            }
+
             ExchangeRateJson exchangeRateJson = exchangeRate.getJsonPesent();
             String exchangeRateJsonString = GSON.toJson(exchangeRateJson);
             OutResponse.setResponse(response, HttpServletResponse.SC_OK, exchangeRateJsonString);
@@ -60,15 +64,15 @@ public class ExchangeRateLogic {
             String exchangeRateCode = request.getPathInfo().split("/")[1];
             ExchangeRate exchangeRate = EXCHANGE_RATE_DAO.get(exchangeRateCode);
 
+            if (exchangeRate == null) {
+                throw new SQLException("Currency pair with this code already exists", "Error", HttpServletResponse.SC_NOT_FOUND);
+            }
+
             ExchangeRateJson exchangeRateJson = exchangeRate.getJsonPesent();
             String exchangeRateJsonString = GSON.toJson(exchangeRateJson);
             OutResponse.setResponse(response, HttpServletResponse.SC_OK, exchangeRateJsonString);
         } catch (SQLException e) {
-            if (e.getErrorCode() == HttpServletResponse.SC_BAD_REQUEST) {
                 OutResponse.setResponse(response, e.getErrorCode(), e.getMessage());
-            } else {
-                OutResponse.setResponse(response, HttpServletResponse.SC_NOT_FOUND, "Currency pair with this code already exists");
-            }
         } catch (Exception s) {
             OutResponse.setResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error");
         }
@@ -80,6 +84,11 @@ public class ExchangeRateLogic {
 
             String exchangeRateCode = request.getPathInfo().split("/")[1];
             ExchangeRate exchangeRate = EXCHANGE_RATE_DAO.get(exchangeRateCode);
+
+            if (exchangeRate == null) {
+                throw new SQLException("Currency pair with this code already exists", "Error", HttpServletResponse.SC_NOT_FOUND);
+            }
+
             BigDecimal newRate = BigDecimal.valueOf(Double.parseDouble(request.getParameterMap().get("rate")[0]));
             exchangeRate.setRate(newRate);
             EXCHANGE_RATE_DAO.set(exchangeRate);
