@@ -22,11 +22,11 @@ public class ExchangeRateServlet extends HttpServlet {
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String method = request.getMethod();
-        if (!method.equals("PATCH")) {
-            super.service(request, response);
+        if (method.equals("PATCH")) {
+            this.doPatch(request, response);
         }
 
-        this.doPatch(request, response);
+        super.service(request, response);
     }
 
     protected void doPatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
