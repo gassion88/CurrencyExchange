@@ -17,10 +17,10 @@ public class CurrenciesServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
-            String currenciesJson = CurrencyService.getAllCurrenciesRequest(request, response);
+            String currenciesJson = CurrencyService.getAllCurrenciesRequest();
 
             OutResponse.setResponse(response, HttpServletResponse.SC_OK, currenciesJson);
-        } catch (SQLException e){
+        } catch (Exception e){
             OutResponse.setResponse(response, HttpServletResponse.SC_CONFLICT, "Error");
         }
     }
