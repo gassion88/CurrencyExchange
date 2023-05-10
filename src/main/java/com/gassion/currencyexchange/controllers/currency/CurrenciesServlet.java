@@ -1,6 +1,6 @@
 package com.gassion.currencyexchange.controllers.currency;
 
-import com.gassion.currencyexchange.logic.CurrencyLogic;
+import com.gassion.currencyexchange.service.CurrencyService;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
@@ -10,11 +10,11 @@ import java.io.IOException;
 public class CurrenciesServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        CurrencyLogic.getAllCurrencies(request, response);
+        CurrencyService.getAllCurrencies(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        CurrencyLogic.addCurrency(request, response);
+        CurrencyService.addCurrency(request, response);
     }
 }

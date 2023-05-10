@@ -1,11 +1,9 @@
-package com.gassion.currencyexchange.logic;
+package com.gassion.currencyexchange.service;
 
 import com.gassion.currencyexchange.DAO.CurrencyDAO;
 import com.gassion.currencyexchange.DAO.ExchangeRateDAO;
-import com.gassion.currencyexchange.entities.ExchangeRate;
 import com.gassion.currencyexchange.entities.jsonResponse.CurrencyJson;
 import com.gassion.currencyexchange.entities.jsonResponse.ExchangeJson;
-import com.gassion.currencyexchange.entities.jsonResponse.ExchangeRateJson;
 import com.gassion.currencyexchange.utils.OutResponse;
 import com.gassion.currencyexchange.utils.ValidateUtils;
 import com.google.gson.Gson;
@@ -16,7 +14,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 
-public class ExchangeLogic {
+public class ExchangeService {
     private static final Gson GSON = new Gson();
 
     public static void exchange(HttpServletRequest request, HttpServletResponse response) throws IOException {

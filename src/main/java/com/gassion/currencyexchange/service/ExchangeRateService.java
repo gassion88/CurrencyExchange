@@ -1,4 +1,4 @@
-package com.gassion.currencyexchange.logic;
+package com.gassion.currencyexchange.service;
 
 import com.gassion.currencyexchange.DAO.ExchangeRateDAO;
 import com.gassion.currencyexchange.entities.ExchangeRate;
@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 
-public class ExchangeRateLogic {
+public class ExchangeRateService {
     private static final Gson GSON = new Gson();
     private static final ExchangeRateDAO EXCHANGE_RATE_DAO = new ExchangeRateDAO();
     private static final ValidateUtils VALIDATE_UTILS = new ValidateUtils();

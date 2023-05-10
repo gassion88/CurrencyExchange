@@ -1,6 +1,6 @@
 package com.gassion.currencyexchange.controllers.exchangeRates;
 
-import com.gassion.currencyexchange.logic.ExchangeRateLogic;
+import com.gassion.currencyexchange.service.ExchangeRateService;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -11,7 +11,7 @@ import java.io.IOException;
 public class ExchangeRateServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        ExchangeRateLogic.getExchangeRateByCode(request, response);
+        ExchangeRateService.getExchangeRateByCode(request, response);
     }
 
     @Override
@@ -31,6 +31,6 @@ public class ExchangeRateServlet extends HttpServlet {
     }
 
     protected void doPatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ExchangeRateLogic.patchExchangeRateByCode(request, response);
+        ExchangeRateService.patchExchangeRateByCode(request, response);
     }
 }

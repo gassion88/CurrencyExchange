@@ -1,6 +1,6 @@
 package com.gassion.currencyexchange.controllers.currency;
 
-import com.gassion.currencyexchange.logic.CurrencyLogic;
+import com.gassion.currencyexchange.service.CurrencyService;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -11,7 +11,7 @@ import java.io.IOException;
 public class CurrencyServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        CurrencyLogic.getCurrencyByCode(request, response);
+        CurrencyService.getCurrencyByCode(request, response);
     }
 
     @Override
@@ -21,6 +21,6 @@ public class CurrencyServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        CurrencyLogic.deleteCurrencyByCode(request, response);
+        CurrencyService.deleteCurrencyByCode(request, response);
     }
 }
