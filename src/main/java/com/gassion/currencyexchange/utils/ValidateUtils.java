@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ValidateUtils {
-    public <T extends JsonPresent, J> List<J> getJsonFormat(List<T> t) {
+    public static <T extends JsonPresent, J> List<J> getJsonFormat(List<T> t) {
         List<J> currencyJson = new ArrayList<>();
 
         for (T cur : t) {
@@ -50,7 +50,7 @@ public class ValidateUtils {
         }
     }
 
-    public void addExchangeRateRequestValidate(HttpServletRequest request) throws SQLException {
+    public static void addExchangeRateRequestValidate(HttpServletRequest request) throws SQLException {
         Map<String, String[]> params = request.getParameterMap();
         String baseCurrencyCode = request.getParameter("baseCurrencyCode");
         String targetCurrencyCode = request.getParameter("targetCurrencyCode");
@@ -79,7 +79,7 @@ public class ValidateUtils {
         }
     }
 
-    public void patchExchangeRateByCodeValidate(HttpServletRequest request) throws SQLException {
+    public static void patchExchangeRateByCodeValidate(HttpServletRequest request) throws SQLException {
         String pathInfo = request.getPathInfo();
         String[] pathParts = pathInfo.split("/");
         String CurrencyCode = pathParts[1];

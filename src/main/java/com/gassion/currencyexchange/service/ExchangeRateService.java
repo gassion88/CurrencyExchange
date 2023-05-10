@@ -18,92 +18,52 @@ import java.util.List;
 public class ExchangeRateService {
     private static final Gson GSON = new Gson();
     private static final ExchangeRateDAO EXCHANGE_RATE_DAO = new ExchangeRateDAO();
-    private static final ValidateUtils VALIDATE_UTILS = new ValidateUtils();
-    public static void getAllExchangeRate(HttpServletResponse response) throws IOException {
-        try {
-            List<ExchangeRate> exchangeRates = EXCHANGE_RATE_DAO.getAll();
+    public static String getAllExchangeRate() throws SQLException {
+        List<ExchangeRate> exchangeRates = EXCHANGE_RATE_DAO.getAll();
 
-            List<ExchangeRateJson> exchangeRatesJson = VALIDATE_UTILS.getJsonFormat(exchangeRates);
-            String exchangeRatesJsonString = GSON.toJson(exchangeRatesJson);
-            OutResponse.setResponse(response, HttpServletResponse.SC_OK, exchangeRatesJsonString);
-        } catch (SQLException e) {
-            OutResponse.setResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database is not available");
-        }
+        List<ExchangeRateJson> exchangeRatesJson = ValidateUtils.getJsonFormat(exchangeRates);
+
+        return GSON.toJson(exchangeRatesJson);
     }
 
-    public static void addExchangeRate(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        try {
-            VALIDATE_UTILS.addExchangeRateRequestValidate(request);
-            ExchangeRate exchangeRate = ExchangeRateFactory.getInUrl(request.getParameterMap());
-            String exchangeRateCode = request.getParameterMap().get("baseCurrencyCode")[0] + request.getParameterMap().get("targetCurrencyCode")[0];
+    public static String addExchangeRate(ExchangeRate exchangeRate, String exchangeRateCode) throws SQLException {
+        EXCHANGE_RATE_DAO.add(exchangeRate);
+        exchangeRate = EXCHANGE_RATE_DAO.get(exchangeRateCode);
 
-            EXCHANGE_RATE_DAO.add(exchangeRate);
-            exchangeRate = EXCHANGE_RATE_DAO.get(exchangeRateCode);
-
-            if (exchangeRate == null) {
-                throw new SQLException("Currency pair with this code already exists", "Error", HttpServletResponse.SC_NOT_FOUND);
-            }
-
-            ExchangeRateJson exchangeRateJson = exchangeRate.getJsonPesent();
-            String exchangeRateJsonString = GSON.toJson(exchangeRateJson);
-            OutResponse.setResponse(response, HttpServletResponse.SC_OK, exchangeRateJsonString);
-        } catch (SQLException e) {
-            if (e.getErrorCode() == HttpServletResponse.SC_BAD_REQUEST) {
-                OutResponse.setResponse(response, e.getErrorCode(), e.getMessage());
-            } else {
-                OutResponse.setResponse(response, HttpServletResponse.SC_CONFLICT, "Currency pair with this code already exists");
-            }
-        } catch (Exception s) {
-            OutResponse.setResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error");
+        if (exchangeRate == null) {
+            throw new SQLException("Currency pair with this code already exists", "Error", HttpServletResponse.SC_NOT_FOUND);
         }
+
+        ExchangeRateJson exchangeRateJson = exchangeRate.getJsonPesent();
+
+        return GSON.toJson(exchangeRateJson);
     }
 
-    public static void getExchangeRateByCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        try {
-            ValidateUtils.getExchangeRateByCodeValidate(request);
-            String exchangeRateCode = request.getPathInfo().split("/")[1];
-            ExchangeRate exchangeRate = EXCHANGE_RATE_DAO.get(exchangeRateCode);
+    public static String getExchangeRateByCodeRequest(String exchangeRateCode) throws SQLException {
+        ExchangeRate exchangeRate = EXCHANGE_RATE_DAO.get(exchangeRateCode);
 
-            if (exchangeRate == null) {
-                throw new SQLException("Currency pair with this code already exists", "Error", HttpServletResponse.SC_NOT_FOUND);
-            }
-
-            ExchangeRateJson exchangeRateJson = exchangeRate.getJsonPesent();
-            String exchangeRateJsonString = GSON.toJson(exchangeRateJson);
-            OutResponse.setResponse(response, HttpServletResponse.SC_OK, exchangeRateJsonString);
-        } catch (SQLException e) {
-                OutResponse.setResponse(response, e.getErrorCode(), e.getMessage());
-        } catch (Exception s) {
-            OutResponse.setResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error");
+        if (exchangeRate == null) {
+            throw new SQLException("Currency pair with this code already exists", "Error", HttpServletResponse.SC_NOT_FOUND);
         }
+
+        ExchangeRateJson exchangeRateJson = exchangeRate.getJsonPesent();
+
+        return GSON.toJson(exchangeRateJson);
     }
 
-    public static void patchExchangeRateByCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        try {
-            VALIDATE_UTILS.patchExchangeRateByCodeValidate(request);
+    public static String patchExchangeRateByCodeRequest(String exchangeRateCode, String rate) throws SQLException {
+        ExchangeRate exchangeRate = EXCHANGE_RATE_DAO.get(exchangeRateCode);
 
-            String exchangeRateCode = request.getPathInfo().split("/")[1];
-            ExchangeRate exchangeRate = EXCHANGE_RATE_DAO.get(exchangeRateCode);
-
-            if (exchangeRate == null) {
-                throw new SQLException("Currency pair with this code already exists", "Error", HttpServletResponse.SC_NOT_FOUND);
-            }
-
-            BigDecimal newRate = BigDecimal.valueOf(Double.parseDouble(request.getParameterMap().get("rate")[0]));
-            exchangeRate.setRate(newRate);
-            EXCHANGE_RATE_DAO.set(exchangeRate);
-
-            ExchangeRateJson exchangeRateJson = exchangeRate.getJsonPesent();
-            String exchangeRateJsonString = GSON.toJson(exchangeRateJson);
-            OutResponse.setResponse(response, HttpServletResponse.SC_OK, exchangeRateJsonString);
-        } catch (SQLException e) {
-            if (e.getErrorCode() == HttpServletResponse.SC_BAD_REQUEST) {
-                OutResponse.setResponse(response, e.getErrorCode(), e.getMessage());
-            } else {
-                OutResponse.setResponse(response, HttpServletResponse.SC_NOT_FOUND, "Currency pair with this code already exists");
-            }
-        } catch (Exception s) {
-            OutResponse.setResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error");
+        if (exchangeRate == null) {
+            throw new SQLException("Currency pair with this code already exists", "Error", HttpServletResponse.SC_NOT_FOUND);
         }
+
+        BigDecimal newRate = BigDecimal.valueOf(Double.parseDouble(rate));
+        exchangeRate.setRate(newRate);
+        EXCHANGE_RATE_DAO.set(exchangeRate);
+
+        ExchangeRateJson exchangeRateJson = exchangeRate.getJsonPesent();
+
+        return GSON.toJson(exchangeRateJson);
     }
 }
