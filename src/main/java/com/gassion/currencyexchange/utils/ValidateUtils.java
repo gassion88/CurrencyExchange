@@ -36,7 +36,7 @@ public class ValidateUtils {
         }
     }
 
-    public void getCurrencyByCodeRequestValidate(HttpServletRequest request) throws SQLException {
+    public void getCurrencyByCodeValidate(HttpServletRequest request) throws SQLException {
         String pathInfo = request.getPathInfo();
         String[] pathParts = pathInfo.split("/");
         String CurrencyCode = pathParts[1];

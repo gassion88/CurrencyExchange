@@ -50,24 +50,11 @@ public class CurrencyService {
         }
     }
 
-    public static void getCurrencyByCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        try {
-            VALIDATE_UTILS.getCurrencyByCodeRequestValidate(request);
-
-            String currencyCode  = request.getPathInfo().split("/")[1];
+    public static String getCurrencyByCode(String currencyCode) throws SQLException {
             Currency currency = CURRENCY_DAO.get(currencyCode);
+            CurrencyJson currencyJson = currency.getJsonPesent();
 
-            String currencyJson = GSON.toJson(currency.getJsonPesent());
-            OutResponse.setResponse(response, HttpServletResponse.SC_OK, currencyJson);
-        } catch (SQLException e) {
-            if (e.getErrorCode() == HttpServletResponse.SC_BAD_REQUEST) {
-                OutResponse.setResponse(response, e.getErrorCode(), e.getMessage());
-            } else {
-                OutResponse.setResponse(response, HttpServletResponse.SC_NOT_FOUND, "Currency not found");
-            }
-        } catch (Exception s) {
-            OutResponse.setResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error");
-        }
+            return GSON.toJson(currencyJson);
     }
 
     public static void deleteCurrencyByCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
