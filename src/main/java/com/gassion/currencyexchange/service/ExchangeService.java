@@ -5,9 +5,7 @@ import com.gassion.currencyexchange.DAO.ExchangeRateDAO;
 import com.gassion.currencyexchange.entities.jsonResponse.CurrencyJson;
 import com.gassion.currencyexchange.entities.jsonResponse.ExchangeJson;
 import com.gassion.currencyexchange.utils.OutResponse;
-import com.gassion.currencyexchange.utils.ValidateUtils;
 import com.google.gson.Gson;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
@@ -17,27 +15,15 @@ import java.sql.SQLException;
 public class ExchangeService {
     private static final Gson GSON = new Gson();
 
-    public static void exchange(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        try {
-            ValidateUtils.exchangeValidate(request);
+    public static String exchange(String baseCurrencyCode, String targetCurrencyCode, BigDecimal amount) throws Exception {
+        BigDecimal rate = findExchangeRate(baseCurrencyCode, targetCurrencyCode);
+        BigDecimal convertedAmount = rate.multiply(amount);
 
-            String baseCurrencyCode = request.getParameterMap().get("from")[0];
-            String targetCurrencyCode = request.getParameterMap().get("to")[0];
-            BigDecimal amount = BigDecimal.valueOf(Double.parseDouble(request.getParameterMap().get("amount")[0]));
-            BigDecimal rate = findExchangeRate(baseCurrencyCode, targetCurrencyCode);
-            BigDecimal convertedAmount = rate.multiply(amount);
+        CurrencyJson baseCurrencyJson = new CurrencyDAO().get(baseCurrencyCode).getJsonPesent();
+        CurrencyJson targetCurrencyJson = new CurrencyDAO().get(targetCurrencyCode).getJsonPesent();
+        ExchangeJson exchangeJson = new ExchangeJson(baseCurrencyJson, targetCurrencyJson, rate, amount, convertedAmount);
 
-            CurrencyJson baseCurrencyJson = new CurrencyDAO().get(baseCurrencyCode).getJsonPesent();
-            CurrencyJson targetCurrencyJson = new CurrencyDAO().get(targetCurrencyCode).getJsonPesent();
-            ExchangeJson exchangeJson = new ExchangeJson(baseCurrencyJson, targetCurrencyJson, rate, amount, convertedAmount);
-            String exchangeJsonString = GSON.toJson(exchangeJson);
-
-            OutResponse.setResponse(response, HttpServletResponse.SC_OK, exchangeJsonString);
-        } catch (SQLException e) {
-            OutResponse.setResponse(response, HttpServletResponse.SC_NOT_FOUND, "{\n" +
-                    "    \"message\": \"Валюта не найдена\"\n" +
-                    "}");
-        }
+        return GSON.toJson(exchangeJson);
     }
 
     private static BigDecimal findExchangeRate(String baseCurrencyCode, String targetCurrencyCode) throws SQLException {
