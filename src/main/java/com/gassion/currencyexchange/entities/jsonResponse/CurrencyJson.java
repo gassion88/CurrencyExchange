@@ -1,7 +1,7 @@
 package com.gassion.currencyexchange.entities.jsonResponse;
 
 
-public class CurrencyJson {
+public class CurrencyJson implements JsonPresent {
     private final int id;
     private String code;
     private String name;

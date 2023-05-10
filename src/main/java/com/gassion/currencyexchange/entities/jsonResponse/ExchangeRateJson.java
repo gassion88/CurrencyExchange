@@ -2,7 +2,7 @@ package com.gassion.currencyexchange.entities.jsonResponse;
 
 import java.math.BigDecimal;
 
-public class ExchangeRateJson {
+public class ExchangeRateJson implements JsonPresent {
     private final int id;
     private CurrencyJson baseCurrency;
     private CurrencyJson targetCurrency;

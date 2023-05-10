@@ -18,7 +18,7 @@ public class CurrencyServlet extends HttpServlet {
             VALIDATE_UTILS.getCurrencyByCodeValidate(request);
             String currencyCode  = request.getPathInfo().split("/")[1];
 
-            String currencyJson = CurrencyService.getCurrencyByCode(currencyCode);
+            String currencyJson = CurrencyService.getCurrencyByCodeRequest(currencyCode);
 
             OutResponse.setResponse(response, HttpServletResponse.SC_OK, currencyJson);
         } catch (SQLException e) {
@@ -35,6 +35,17 @@ public class CurrencyServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        CurrencyService.deleteCurrencyByCode(request, response);
+        try {
+            VALIDATE_UTILS.deleteCurrencyByCodeValidate(request);
+            String currencyCode = request.getPathInfo().split("/")[1];
+
+            String currencyJson =  CurrencyService.deleteCurrencyByCodeRequest(currencyCode);
+
+            OutResponse.setResponse(response, HttpServletResponse.SC_OK, "Deleted \n" + currencyJson);
+        } catch (SQLException e) {
+            OutResponse.setResponse(response, e.getErrorCode(), e.getMessage());
+        }  catch (Exception s) {
+            OutResponse.setResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error");
+        }
     }
 }

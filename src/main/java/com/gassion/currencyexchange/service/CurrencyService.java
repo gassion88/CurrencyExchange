@@ -50,33 +50,17 @@ public class CurrencyService {
         }
     }
 
-    public static String getCurrencyByCode(String currencyCode) throws SQLException {
+    public static String getCurrencyByCodeRequest(String currencyCode) throws Exception {
             Currency currency = CURRENCY_DAO.get(currencyCode);
             CurrencyJson currencyJson = currency.getJsonPesent();
 
             return GSON.toJson(currencyJson);
     }
 
-    public static void deleteCurrencyByCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        try {
-            VALIDATE_UTILS.deleteCurrencyByCodeValidate(request);
-
-            String currencyCode = request.getPathInfo().split("/")[1];
+    public static String deleteCurrencyByCodeRequest(String currencyCode) throws Exception {
             Currency currency = CURRENCY_DAO.get(currencyCode);
-
             new CurrencyDAO().delete(currency.getId());
 
-            CurrencyJson currencyJson = currency.getJsonPesent();
-            String currencyJsonString = GSON.toJson(currencyJson);
-            OutResponse.setResponse(response, HttpServletResponse.SC_OK, "Deleted \n" + currencyJsonString);
-        }catch (SQLException e) {
-            if (e.getErrorCode() == HttpServletResponse.SC_BAD_REQUEST) {
-                OutResponse.setResponse(response, e.getErrorCode(), e.getMessage());
-            } else {
-                OutResponse.setResponse(response, HttpServletResponse.SC_NOT_FOUND, "Валюта не найдена");
-            }
-        } catch (Exception s) {
-            OutResponse.setResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error");
-        }
+            return GSON.toJson(currency.getJsonPesent());
     }
 }
