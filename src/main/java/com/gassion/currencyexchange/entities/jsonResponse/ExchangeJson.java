@@ -12,9 +12,9 @@ public class ExchangeJson implements JsonPresent {
     public ExchangeJson(CurrencyJson baseCurrency, CurrencyJson targetCurrency, BigDecimal rate, BigDecimal amount, BigDecimal convertedAmount) {
         this.baseCurrency = baseCurrency;
         this.targetCurrency = targetCurrency;
-        this.rate = rate;
-        this.amount = amount;
-        this.convertedAmount = convertedAmount;
+        this.rate = rate.setScale(2);
+        this.amount = amount.setScale(2);
+        this.convertedAmount = convertedAmount.setScale(2);
     }
 
     public CurrencyJson getBaseCurrency() {

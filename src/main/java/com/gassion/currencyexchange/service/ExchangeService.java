@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.SQLException;
 
 public class ExchangeService {
@@ -35,7 +36,8 @@ public class ExchangeService {
         }
 
         if (new ExchangeRateDAO().get(reverseCurrencyPair) != null) {
-            return BigDecimal.valueOf(1).divide(new ExchangeRateDAO().get(reverseCurrencyPair).getRate());
+            BigDecimal directCurrencyPairRate = new ExchangeRateDAO().get(reverseCurrencyPair).getRate();
+            return BigDecimal.valueOf(1).divide(directCurrencyPairRate, 2, RoundingMode.DOWN);
         }
 
         if (new ExchangeRateDAO().get(baseCurrencyCode + "USD") != null ||
@@ -56,13 +58,15 @@ public class ExchangeService {
         if (new ExchangeRateDAO().get(baseCurrencyCode + "USD") != null) {
             rate = new ExchangeRateDAO().get(baseCurrencyCode + "USD").getRate();
         } else {
-            rate = BigDecimal.valueOf(1).divide(new ExchangeRateDAO().get("USD" + baseCurrencyCode).getRate());
+            BigDecimal USDToBaseCurrencyRate = new ExchangeRateDAO().get("USD" + baseCurrencyCode).getRate();
+            rate = BigDecimal.valueOf(1).divide(USDToBaseCurrencyRate, 2);
         }
 
         if (new ExchangeRateDAO().get("USD" + targetCurrencyCode) != null) {
             rate = rate.multiply(new ExchangeRateDAO().get("USD" + targetCurrencyCode).getRate()) ;
         } else {
-            rate = rate.multiply( (BigDecimal.valueOf(1).divide(new ExchangeRateDAO().get(targetCurrencyCode + "USD").getRate())) );
+            BigDecimal targetCurrencyToUSD = new ExchangeRateDAO().get(targetCurrencyCode + "USD").getRate();
+            rate = rate.multiply( (BigDecimal.valueOf(1).divide(targetCurrencyToUSD, 2)) );
         }
 
         return rate;

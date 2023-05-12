@@ -12,7 +12,7 @@ public class ExchangeRateJson implements JsonPresent {
         this.id = id;
         this.baseCurrency = baseCurrency;
         this.targetCurrency = targetCurrency;
-        this.rate = rate;
+        this.rate = rate.setScale(2);
     }
 
     public int getId() {
