@@ -5,7 +5,6 @@ import com.gassion.currencyexchange.entities.Currency;
 import com.gassion.currencyexchange.entities.jsonResponse.CurrencyJson;
 import com.gassion.currencyexchange.utils.ValidateUtils;
 import com.google.gson.Gson;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.sql.SQLException;
@@ -33,16 +32,26 @@ public class CurrencyService {
     }
 
     public static String getCurrencyByCodeRequest(String currencyCode) throws Exception {
-            Currency currency = CURRENCY_DAO.get(currencyCode);
-            CurrencyJson currencyJson = currency.getJsonPesent();
+        Currency currency = CURRENCY_DAO.get(currencyCode);
 
-            return GSON.toJson(currencyJson);
+        if (currency == null) {
+            throw new SQLException("Currency not found", "Error", HttpServletResponse.SC_NOT_FOUND);
+        }
+
+        CurrencyJson currencyJson = currency.getJsonPesent();
+
+        return GSON.toJson(currencyJson);
     }
 
     public static String deleteCurrencyByCodeRequest(String currencyCode) throws Exception {
-            Currency currency = CURRENCY_DAO.get(currencyCode);
-            new CurrencyDAO().delete(currency.getId());
+        Currency currency = CURRENCY_DAO.get(currencyCode);
 
-            return GSON.toJson(currency.getJsonPesent());
+        if (currency == null) {
+            throw new SQLException("Currency not found", "Error", HttpServletResponse.SC_NOT_FOUND);
+        }
+
+        new CurrencyDAO().delete(currency.getId());
+
+        return GSON.toJson(currency.getJsonPesent());
     }
 }

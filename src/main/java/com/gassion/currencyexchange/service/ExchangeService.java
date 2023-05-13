@@ -4,11 +4,9 @@ import com.gassion.currencyexchange.DAO.CurrencyDAO;
 import com.gassion.currencyexchange.DAO.ExchangeRateDAO;
 import com.gassion.currencyexchange.entities.jsonResponse.CurrencyJson;
 import com.gassion.currencyexchange.entities.jsonResponse.ExchangeJson;
-import com.gassion.currencyexchange.utils.OutResponse;
 import com.google.gson.Gson;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.SQLException;

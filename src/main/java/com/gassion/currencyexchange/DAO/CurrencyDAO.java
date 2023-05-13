@@ -2,8 +2,6 @@ package com.gassion.currencyexchange.DAO;
 
 import com.gassion.currencyexchange.entities.Currency;
 import com.gassion.currencyexchange.utils.DBUtils;
-import com.gassion.currencyexchange.utils.OutResponse;
-import jakarta.servlet.http.HttpServletResponse;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -28,7 +26,7 @@ public class CurrencyDAO extends DAO<Currency>{
         }
 
         if (currency.size() == 0) {
-            throw new SQLException("Currency not found", "Error", HttpServletResponse.SC_NOT_FOUND);
+            return null;
         }
 
         return currency.get(0);
@@ -43,11 +41,10 @@ public class CurrencyDAO extends DAO<Currency>{
             ResultSet result = preparedStatement.executeQuery();
 
             currency = getCurrency(result);
-
         }
 
         if (currency.size() == 0) {
-            throw new SQLException();
+            return null;
         }
 
         return currency.get(0);
@@ -63,7 +60,6 @@ public class CurrencyDAO extends DAO<Currency>{
             ResultSet result = preparedStatement.executeQuery();
 
             currencies = getCurrency(result);
-
         }
 
         return currencies;
