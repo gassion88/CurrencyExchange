@@ -5,6 +5,7 @@ import com.gassion.currencyexchange.entities.Currency;
 import com.gassion.currencyexchange.entities.ExchangeRate;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.SQLException;
 import java.util.Map;
 
@@ -23,6 +24,6 @@ public class ExchangeRateFactory {
             throw new RuntimeException(e);
         }
 
-        return new ExchangeRate(0, baseCurrency.getId(), targetCurrency.getId(), rate);
+        return new ExchangeRate(0, baseCurrency.getId(), targetCurrency.getId(), rate.setScale(2, RoundingMode.DOWN));
     }
 }

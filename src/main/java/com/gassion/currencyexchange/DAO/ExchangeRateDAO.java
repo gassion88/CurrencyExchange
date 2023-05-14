@@ -98,7 +98,7 @@ public class ExchangeRateDAO extends DAO<ExchangeRate>{
             int ID = result.getInt("ID");
             int BaseCurrencyId = result.getInt("BaseCurrencyId");
             int TargetCurrencyId = result.getInt("TargetCurrencyId");
-            BigDecimal Rate = BigDecimal.valueOf(result.getInt("Rate"));
+            BigDecimal Rate = result.getBigDecimal("Rate");
 
             exchangeRates.add(new ExchangeRate(ID, BaseCurrencyId, TargetCurrencyId, Rate));
         }
