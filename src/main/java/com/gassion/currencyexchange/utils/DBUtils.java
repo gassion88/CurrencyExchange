@@ -1,10 +1,8 @@
 package com.gassion.currencyexchange.utils;
 
-import com.gassion.currencyexchange.DB.MysqlConnection;
 import com.gassion.currencyexchange.DB.SQLiteConnection;
 
 import java.sql.Connection;
-import java.util.Objects;
 
 public class DBUtils {
     public static Connection connection = SQLiteConnection.getConnection();
