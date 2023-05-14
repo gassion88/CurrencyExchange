@@ -2,15 +2,11 @@ package com.gassion.currencyexchange.service;
 
 import com.gassion.currencyexchange.DAO.ExchangeRateDAO;
 import com.gassion.currencyexchange.entities.ExchangeRate;
-import com.gassion.currencyexchange.entities.factories.ExchangeRateFactory;
-import com.gassion.currencyexchange.entities.jsonResponse.ExchangeRateJson;
-import com.gassion.currencyexchange.utils.OutResponse;
+import com.gassion.currencyexchange.entities.DTO.ExchangeRateDTO;
 import com.gassion.currencyexchange.utils.ValidateUtils;
 import com.google.gson.Gson;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
@@ -21,7 +17,7 @@ public class ExchangeRateService {
     public static String getAllExchangeRate() throws SQLException {
         List<ExchangeRate> exchangeRates = EXCHANGE_RATE_DAO.getAll();
 
-        List<ExchangeRateJson> exchangeRatesJson = ValidateUtils.getJsonFormat(exchangeRates);
+        List<ExchangeRateDTO> exchangeRatesJson = ValidateUtils.getJsonFormat(exchangeRates);
 
         return GSON.toJson(exchangeRatesJson);
     }
@@ -34,9 +30,9 @@ public class ExchangeRateService {
             throw new SQLException("Currency pair with this code already exists", "Error", HttpServletResponse.SC_NOT_FOUND);
         }
 
-        ExchangeRateJson exchangeRateJson = exchangeRate.getJsonPesent();
+        ExchangeRateDTO exchangeRateDTO = exchangeRate.getJsonPesent();
 
-        return GSON.toJson(exchangeRateJson);
+        return GSON.toJson(exchangeRateDTO);
     }
 
     public static String getExchangeRateByCodeRequest(String exchangeRateCode) throws SQLException {
@@ -46,9 +42,9 @@ public class ExchangeRateService {
             throw new SQLException("Currency pair with this code already exists", "Error", HttpServletResponse.SC_NOT_FOUND);
         }
 
-        ExchangeRateJson exchangeRateJson = exchangeRate.getJsonPesent();
+        ExchangeRateDTO exchangeRateDTO = exchangeRate.getJsonPesent();
 
-        return GSON.toJson(exchangeRateJson);
+        return GSON.toJson(exchangeRateDTO);
     }
 
     public static String patchExchangeRateByCodeRequest(String exchangeRateCode, String rate) throws SQLException {
@@ -62,8 +58,8 @@ public class ExchangeRateService {
         exchangeRate.setRate(newRate);
         EXCHANGE_RATE_DAO.set(exchangeRate);
 
-        ExchangeRateJson exchangeRateJson = exchangeRate.getJsonPesent();
+        ExchangeRateDTO exchangeRateDTO = exchangeRate.getJsonPesent();
 
-        return GSON.toJson(exchangeRateJson);
+        return GSON.toJson(exchangeRateDTO);
     }
 }

@@ -1,12 +1,11 @@
 package com.gassion.currencyexchange.entities;
 
 import com.gassion.currencyexchange.DAO.JsonPresent;
-import com.gassion.currencyexchange.entities.jsonResponse.CurrencyJson;
+import com.gassion.currencyexchange.entities.DTO.CurrencyDTO;
 
-import java.util.Map;
 import java.util.Objects;
 
-public class Currency implements JsonPresent<CurrencyJson> {
+public class Currency implements JsonPresent<CurrencyDTO> {
     private final int id;
     private String code;
     private String fullName;
@@ -80,7 +79,7 @@ public class Currency implements JsonPresent<CurrencyJson> {
     }
 
     @Override
-    public CurrencyJson getJsonPesent() {
-        return new CurrencyJson(getId(), getCode(), getFullName(), getSign());
+    public CurrencyDTO getJsonPesent() {
+        return new CurrencyDTO(getId(), getCode(), getFullName(), getSign());
     }
 }

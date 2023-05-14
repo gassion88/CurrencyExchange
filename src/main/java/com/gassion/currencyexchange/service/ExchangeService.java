@@ -2,8 +2,8 @@ package com.gassion.currencyexchange.service;
 
 import com.gassion.currencyexchange.DAO.CurrencyDAO;
 import com.gassion.currencyexchange.DAO.ExchangeRateDAO;
-import com.gassion.currencyexchange.entities.jsonResponse.CurrencyJson;
-import com.gassion.currencyexchange.entities.jsonResponse.ExchangeJson;
+import com.gassion.currencyexchange.entities.DTO.CurrencyDTO;
+import com.gassion.currencyexchange.entities.DTO.ExchangeDTO;
 import com.google.gson.Gson;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -18,11 +18,11 @@ public class ExchangeService {
         BigDecimal rate = findExchangeRate(baseCurrencyCode, targetCurrencyCode);
         BigDecimal convertedAmount = rate.multiply(amount);
 
-        CurrencyJson baseCurrencyJson = new CurrencyDAO().get(baseCurrencyCode).getJsonPesent();
-        CurrencyJson targetCurrencyJson = new CurrencyDAO().get(targetCurrencyCode).getJsonPesent();
-        ExchangeJson exchangeJson = new ExchangeJson(baseCurrencyJson, targetCurrencyJson, rate, amount, convertedAmount);
+        CurrencyDTO baseCurrencyDTO = new CurrencyDAO().get(baseCurrencyCode).getJsonPesent();
+        CurrencyDTO targetCurrencyDTO = new CurrencyDAO().get(targetCurrencyCode).getJsonPesent();
+        ExchangeDTO exchangeDTO = new ExchangeDTO(baseCurrencyDTO, targetCurrencyDTO, rate, amount, convertedAmount);
 
-        return GSON.toJson(exchangeJson);
+        return GSON.toJson(exchangeDTO);
     }
 
     private static BigDecimal findExchangeRate(String baseCurrencyCode, String targetCurrencyCode) throws SQLException {

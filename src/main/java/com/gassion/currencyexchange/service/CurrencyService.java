@@ -2,7 +2,7 @@ package com.gassion.currencyexchange.service;
 
 import com.gassion.currencyexchange.DAO.CurrencyDAO;
 import com.gassion.currencyexchange.entities.Currency;
-import com.gassion.currencyexchange.entities.jsonResponse.CurrencyJson;
+import com.gassion.currencyexchange.entities.DTO.CurrencyDTO;
 import com.gassion.currencyexchange.utils.ValidateUtils;
 import com.google.gson.Gson;
 import jakarta.servlet.http.HttpServletResponse;
@@ -15,7 +15,7 @@ public class CurrencyService {
     private static final CurrencyDAO CURRENCY_DAO = new CurrencyDAO();
     public static String getAllCurrenciesRequest() throws Exception {
             List<Currency> currencies = CURRENCY_DAO.getAll();
-            List<CurrencyJson> currenciesJson = ValidateUtils.getJsonFormat(currencies);
+            List<CurrencyDTO> currenciesJson = ValidateUtils.getJsonFormat(currencies);
 
             return GSON.toJson(currenciesJson);
     }
@@ -38,9 +38,9 @@ public class CurrencyService {
             throw new SQLException("Currency not found", "Error", HttpServletResponse.SC_NOT_FOUND);
         }
 
-        CurrencyJson currencyJson = currency.getJsonPesent();
+        CurrencyDTO currencyDTO = currency.getJsonPesent();
 
-        return GSON.toJson(currencyJson);
+        return GSON.toJson(currencyDTO);
     }
 
     public static String deleteCurrencyByCodeRequest(String currencyCode) throws Exception {

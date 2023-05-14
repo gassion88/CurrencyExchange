@@ -2,15 +2,14 @@ package com.gassion.currencyexchange.entities;
 
 import com.gassion.currencyexchange.DAO.CurrencyDAO;
 import com.gassion.currencyexchange.DAO.JsonPresent;
-import com.gassion.currencyexchange.entities.jsonResponse.CurrencyJson;
-import com.gassion.currencyexchange.entities.jsonResponse.ExchangeRateJson;
+import com.gassion.currencyexchange.entities.DTO.CurrencyDTO;
+import com.gassion.currencyexchange.entities.DTO.ExchangeRateDTO;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.util.Map;
 import java.util.Objects;
 
-public class ExchangeRate implements JsonPresent<ExchangeRateJson> {
+public class ExchangeRate implements JsonPresent<ExchangeRateDTO> {
     private final int id;
     private final int baseCurrencyId;
     private final int targetCurrencyId;
@@ -76,9 +75,9 @@ public class ExchangeRate implements JsonPresent<ExchangeRateJson> {
     }
 
     @Override
-    public ExchangeRateJson getJsonPesent() {
-        CurrencyJson baseCurrency = null;
-        CurrencyJson targetCurrency = null;
+    public ExchangeRateDTO getJsonPesent() {
+        CurrencyDTO baseCurrency = null;
+        CurrencyDTO targetCurrency = null;
         try {
             baseCurrency = new CurrencyDAO().getById(getBaseCurrencyId()).getJsonPesent();
             targetCurrency = new CurrencyDAO().getById(getTargetCurrencyId()).getJsonPesent();
@@ -86,6 +85,6 @@ public class ExchangeRate implements JsonPresent<ExchangeRateJson> {
             throw new RuntimeException(e);
         }
 
-        return new ExchangeRateJson(getId(), baseCurrency, targetCurrency, getRate());
+        return new ExchangeRateDTO(getId(), baseCurrency, targetCurrency, getRate());
     }
 }
