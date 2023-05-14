@@ -75,12 +75,12 @@ public class ExchangeRate implements JsonPresent<ExchangeRateDTO> {
     }
 
     @Override
-    public ExchangeRateDTO getJsonPesent() {
+    public ExchangeRateDTO getDTOFormat() {
         CurrencyDTO baseCurrency = null;
         CurrencyDTO targetCurrency = null;
         try {
-            baseCurrency = new CurrencyDAO().getById(getBaseCurrencyId()).getJsonPesent();
-            targetCurrency = new CurrencyDAO().getById(getTargetCurrencyId()).getJsonPesent();
+            baseCurrency = new CurrencyDAO().getById(getBaseCurrencyId()).getDTOFormat();
+            targetCurrency = new CurrencyDAO().getById(getTargetCurrencyId()).getDTOFormat();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

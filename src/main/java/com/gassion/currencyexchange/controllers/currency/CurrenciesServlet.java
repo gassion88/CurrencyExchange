@@ -1,25 +1,32 @@
 package com.gassion.currencyexchange.controllers.currency;
 
 import com.gassion.currencyexchange.entities.Currency;
+import com.gassion.currencyexchange.entities.DTO.CurrencyDTO;
 import com.gassion.currencyexchange.entities.factories.CurrencyFactory;
 import com.gassion.currencyexchange.service.CurrencyService;
 import com.gassion.currencyexchange.utils.OutResponse;
 import com.gassion.currencyexchange.utils.ValidateUtils;
+import com.google.gson.Gson;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 @WebServlet(name = "CurrenciesServlet", value = "/currencies")
 public class CurrenciesServlet extends HttpServlet {
     private static final ValidateUtils VALIDATE_UTILS = new ValidateUtils();
+    private static final Gson GSON = new Gson();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
-            String currenciesJson = CurrencyService.getAllCurrenciesRequest();
+            List<Currency> currencies = CurrencyService.getAllCurrenciesRequest();
 
-            OutResponse.setResponse(response, HttpServletResponse.SC_OK, currenciesJson);
+            List<CurrencyDTO> currenciesDTO = ValidateUtils.getDTOFormat(currencies);
+            String currenciesDTOJson = GSON.toJson(currenciesDTO);
+
+            OutResponse.setResponse(response, HttpServletResponse.SC_OK, currenciesDTOJson);
         } catch (Exception e){
             OutResponse.setResponse(response, HttpServletResponse.SC_CONFLICT, "Error");
         }
@@ -31,9 +38,11 @@ public class CurrenciesServlet extends HttpServlet {
             VALIDATE_UTILS.addCurrencyRequestValidate(request);
             Currency currency  = CurrencyFactory.getInUrl(request.getParameterMap());
 
-            String currencyJson = CurrencyService.addCurrency(currency);
+            Currency addedCurrency = CurrencyService.addCurrency(currency);
+            CurrencyDTO addedCurrencyDTO = addedCurrency.getDTOFormat();
+            String addedCurrencyDTOJson = GSON.toJson(addedCurrencyDTO);
 
-            OutResponse.setResponse(response, HttpServletResponse.SC_OK, currencyJson);
+            OutResponse.setResponse(response, HttpServletResponse.SC_OK, addedCurrencyDTOJson);
         } catch (SQLException e) {
             OutResponse.setResponse(response, e.getErrorCode(), e.getMessage());
         } catch (Exception s) {

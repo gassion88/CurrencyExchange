@@ -4,7 +4,6 @@ import com.gassion.currencyexchange.DAO.CurrencyDAO;
 import com.gassion.currencyexchange.DAO.ExchangeRateDAO;
 import com.gassion.currencyexchange.entities.DTO.CurrencyDTO;
 import com.gassion.currencyexchange.entities.DTO.ExchangeDTO;
-import com.google.gson.Gson;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.math.BigDecimal;
@@ -12,17 +11,15 @@ import java.math.RoundingMode;
 import java.sql.SQLException;
 
 public class ExchangeService {
-    private static final Gson GSON = new Gson();
 
-    public static String exchange(String baseCurrencyCode, String targetCurrencyCode, BigDecimal amount) throws Exception {
+    public static ExchangeDTO exchange(String baseCurrencyCode, String targetCurrencyCode, BigDecimal amount) throws Exception {
         BigDecimal rate = findExchangeRate(baseCurrencyCode, targetCurrencyCode);
         BigDecimal convertedAmount = rate.multiply(amount);
 
-        CurrencyDTO baseCurrencyDTO = new CurrencyDAO().get(baseCurrencyCode).getJsonPesent();
-        CurrencyDTO targetCurrencyDTO = new CurrencyDAO().get(targetCurrencyCode).getJsonPesent();
-        ExchangeDTO exchangeDTO = new ExchangeDTO(baseCurrencyDTO, targetCurrencyDTO, rate, amount, convertedAmount);
+        CurrencyDTO baseCurrencyDTO = new CurrencyDAO().get(baseCurrencyCode).getDTOFormat();
+        CurrencyDTO targetCurrencyDTO = new CurrencyDAO().get(targetCurrencyCode).getDTOFormat();
 
-        return GSON.toJson(exchangeDTO);
+        return new ExchangeDTO(baseCurrencyDTO, targetCurrencyDTO, rate, amount, convertedAmount);
     }
 
     private static BigDecimal findExchangeRate(String baseCurrencyCode, String targetCurrencyCode) throws SQLException {

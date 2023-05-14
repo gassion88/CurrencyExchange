@@ -79,7 +79,7 @@ public class Currency implements JsonPresent<CurrencyDTO> {
     }
 
     @Override
-    public CurrencyDTO getJsonPesent() {
+    public CurrencyDTO getDTOFormat() {
         return new CurrencyDTO(getId(), getCode(), getFullName(), getSign());
     }
 }

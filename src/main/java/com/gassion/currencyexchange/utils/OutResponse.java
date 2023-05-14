@@ -8,12 +8,12 @@ import java.io.PrintWriter;
 public class OutResponse {
     private static PrintWriter out;
 
-    public static void setResponse(HttpServletResponse response, int statusCode, String resource) throws IOException {
+    public static void setResponse(HttpServletResponse response, int statusCode, String resources) throws IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.setStatus(statusCode);
         out = response.getWriter();
-        out.print(resource);
+        out.print(resources);
         out.flush();
     }
 }
