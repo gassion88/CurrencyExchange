@@ -44,7 +44,7 @@ public class ExchangeRatesServlet extends HttpServlet {
 
             OutResponse.setResponse(response, HttpServletResponse.SC_OK, addedExchangeRateDTOJson);
         } catch (SQLException e) {
-            OutResponse.setResponse(response, e.getErrorCode(), e.getMessage());
+            OutResponse.setResponse(response, e.getErrorCode(), GSON.toJson(e.getMessage()));
         } catch (Exception s) {
             OutResponse.setResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, GSON.toJson(Strings.ERROR));
         }

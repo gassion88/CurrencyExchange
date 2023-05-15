@@ -1,6 +1,5 @@
 package com.gassion.currencyexchange.utils;
 
-import com.gassion.currencyexchange.entities.DTO.MessageDTO;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
