@@ -28,11 +28,11 @@ public class ValidateUtils {
         String sign = request.getParameter("sign");
 
         if(name == null || code == null || sign == null) {
-            throw new SQLException("Required form field is missing", "Error", HttpServletResponse.SC_BAD_REQUEST);
+            throw new SQLException(Strings.REQUIRED_FORM_FIELD_IS_MISSING, Strings.ERROR, HttpServletResponse.SC_BAD_REQUEST);
         }
 
         if (params.size() != 3) {
-            throw new SQLException("Invalid number of parameters", "Error", HttpServletResponse.SC_BAD_REQUEST);
+            throw new SQLException(Strings.INVALID_NUMBER_OF_PARAMETERS, Strings.ERROR, HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 
@@ -42,11 +42,11 @@ public class ValidateUtils {
         String CurrencyCode = pathParts[1];
 
         if(CurrencyCode == null) {
-            throw new SQLException("Код валюты отсутствует в адресе", "Error", HttpServletResponse.SC_BAD_REQUEST);
+            throw new SQLException(Strings.THE_CURRENCY_CODE_IS_NOT_IN_THE_ADDRESS, Strings.ERROR, HttpServletResponse.SC_BAD_REQUEST);
         }
 
         if (pathParts.length != 2) {
-            throw new SQLException("Invalid number of parameters", "Error", HttpServletResponse.SC_BAD_REQUEST);
+            throw new SQLException(Strings.INVALID_NUMBER_OF_PARAMETERS, Strings.ERROR, HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 
@@ -57,11 +57,11 @@ public class ValidateUtils {
         String rate = request.getParameter("rate");
 
         if(baseCurrencyCode == null || targetCurrencyCode == null || rate == null) {
-            throw new SQLException("Required form field is missing", "Error", HttpServletResponse.SC_BAD_REQUEST);
+            throw new SQLException(Strings.REQUIRED_FORM_FIELD_IS_MISSING, Strings.ERROR, HttpServletResponse.SC_BAD_REQUEST);
         }
 
         if (params.size() != 3) {
-            throw new SQLException("Invalid number of parameters", "Error", HttpServletResponse.SC_BAD_REQUEST);
+            throw new SQLException(Strings.INVALID_NUMBER_OF_PARAMETERS, Strings.ERROR, HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 
@@ -71,11 +71,11 @@ public class ValidateUtils {
         String CurrencyCode = pathParts[1];
 
         if(CurrencyCode == null) {
-            throw new SQLException("Код валюты отсутствует в адресе", "Error", HttpServletResponse.SC_BAD_REQUEST);
+            throw new SQLException(Strings.THE_CURRENCY_CODE_IS_NOT_IN_THE_ADDRESS, Strings.ERROR, HttpServletResponse.SC_BAD_REQUEST);
         }
 
         if (pathParts.length != 2) {
-            throw new SQLException("Invalid number of parameters", "Error", HttpServletResponse.SC_BAD_REQUEST);
+            throw new SQLException(Strings.INVALID_NUMBER_OF_PARAMETERS, Strings.ERROR, HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 
@@ -85,11 +85,11 @@ public class ValidateUtils {
         String CurrencyCode = pathParts[1];
 
         if(CurrencyCode == null) {
-            throw new SQLException("Required form field is missing", "Error", HttpServletResponse.SC_BAD_REQUEST);
+            throw new SQLException(Strings.REQUIRED_FORM_FIELD_IS_MISSING, Strings.ERROR, HttpServletResponse.SC_BAD_REQUEST);
         }
 
         if (pathParts.length != 2) {
-            throw new SQLException("Invalid number of parameters", "Error", HttpServletResponse.SC_BAD_REQUEST);
+            throw new SQLException(Strings.INVALID_NUMBER_OF_PARAMETERS, Strings.ERROR, HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 
@@ -99,11 +99,11 @@ public class ValidateUtils {
         String CurrencyCode = pathParts[1];
 
         if(CurrencyCode == null) {
-            throw new SQLException("Required form field is missing", "Error", HttpServletResponse.SC_BAD_REQUEST);
+            throw new SQLException(Strings.REQUIRED_FORM_FIELD_IS_MISSING, Strings.ERROR, HttpServletResponse.SC_BAD_REQUEST);
         }
 
         if (pathParts.length != 2) {
-            throw new SQLException("Invalid number of parameters", "Error", HttpServletResponse.SC_BAD_REQUEST);
+            throw new SQLException(Strings.INVALID_NUMBER_OF_PARAMETERS, Strings.ERROR, HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 
@@ -114,11 +114,11 @@ public class ValidateUtils {
         BigDecimal amount = BigDecimal.valueOf(Double.parseDouble(request.getParameter("amount")));
 
         if(from == null || to == null || amount.equals(BigDecimal.valueOf(0))) {
-            throw new SQLException("Required form field is missing", "Error", HttpServletResponse.SC_BAD_REQUEST);
+            throw new SQLException(Strings.REQUIRED_FORM_FIELD_IS_MISSING, Strings.ERROR, HttpServletResponse.SC_BAD_REQUEST);
         }
 
         if (params.size() != 3) {
-            throw new SQLException("Invalid number of parameters", "Error", HttpServletResponse.SC_BAD_REQUEST);
+            throw new SQLException(Strings.INVALID_NUMBER_OF_PARAMETERS, Strings.ERROR, HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 

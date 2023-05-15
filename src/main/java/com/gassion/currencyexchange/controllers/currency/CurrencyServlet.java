@@ -4,6 +4,7 @@ import com.gassion.currencyexchange.entities.Currency;
 import com.gassion.currencyexchange.entities.DTO.CurrencyDTO;
 import com.gassion.currencyexchange.service.CurrencyService;
 import com.gassion.currencyexchange.utils.OutResponse;
+import com.gassion.currencyexchange.utils.Strings;
 import com.gassion.currencyexchange.utils.ValidateUtils;
 import com.google.gson.Gson;
 import jakarta.servlet.http.*;
@@ -30,7 +31,7 @@ public class CurrencyServlet extends HttpServlet {
         } catch (SQLException e) {
             OutResponse.setResponse(response, e.getErrorCode(), e.getMessage());
         } catch (Exception s) {
-            OutResponse.setResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error");
+            OutResponse.setResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, GSON.toJson(Strings.ERROR));
         }
     }
 
@@ -53,7 +54,7 @@ public class CurrencyServlet extends HttpServlet {
         } catch (SQLException e) {
             OutResponse.setResponse(response, e.getErrorCode(), e.getMessage());
         }  catch (Exception s) {
-            OutResponse.setResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error");
+            OutResponse.setResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, GSON.toJson(Strings.ERROR));
         }
     }
 }

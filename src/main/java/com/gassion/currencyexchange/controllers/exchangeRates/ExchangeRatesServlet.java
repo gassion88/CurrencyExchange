@@ -5,9 +5,9 @@ import com.gassion.currencyexchange.entities.ExchangeRate;
 import com.gassion.currencyexchange.entities.factories.ExchangeRateFactory;
 import com.gassion.currencyexchange.service.ExchangeRateService;
 import com.gassion.currencyexchange.utils.OutResponse;
+import com.gassion.currencyexchange.utils.Strings;
 import com.gassion.currencyexchange.utils.ValidateUtils;
 import com.google.gson.Gson;
-import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
@@ -27,7 +27,7 @@ public class ExchangeRatesServlet extends HttpServlet {
 
             OutResponse.setResponse(response, HttpServletResponse.SC_OK, exchangeRateDTOSJson);
         } catch (Exception e) {
-            OutResponse.setResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database is not available");
+            OutResponse.setResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, GSON.toJson(Strings.DATABASE_IS_NOT_AVAILABLE));
         }
     }
 
@@ -46,7 +46,7 @@ public class ExchangeRatesServlet extends HttpServlet {
         } catch (SQLException e) {
             OutResponse.setResponse(response, e.getErrorCode(), e.getMessage());
         } catch (Exception s) {
-            OutResponse.setResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error");
+            OutResponse.setResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, GSON.toJson(Strings.ERROR));
         }
     }
 }
