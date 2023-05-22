@@ -1,6 +1,5 @@
 package com.gassion.currencyexchange.utils;
 
-import com.gassion.currencyexchange.DAO.JsonPresent;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -11,16 +10,6 @@ import java.util.List;
 import java.util.Map;
 
 public class ValidateUtils {
-    public static <T extends JsonPresent, J> List<J> getDTOFormat(List<T> t) {
-        List<J> currencyJson = new ArrayList<>();
-
-        for (T cur : t) {
-            currencyJson.add((J) cur.getDTOFormat());
-        }
-
-        return currencyJson;
-    }
-
     public void addCurrencyRequestValidate(HttpServletRequest request) throws SQLException {
         Map<String, String[]> params = request.getParameterMap();
         String name = request.getParameter("name");

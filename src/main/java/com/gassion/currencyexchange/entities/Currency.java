@@ -1,11 +1,10 @@
 package com.gassion.currencyexchange.entities;
 
-import com.gassion.currencyexchange.DAO.JsonPresent;
 import com.gassion.currencyexchange.entities.DTO.CurrencyDTO;
 
 import java.util.Objects;
 
-public class Currency implements JsonPresent<CurrencyDTO> {
+public class Currency extends Model {
     private final int id;
     private String code;
     private String fullName;
@@ -76,10 +75,5 @@ public class Currency implements JsonPresent<CurrencyDTO> {
                 ", fullName='" + fullName + '\'' +
                 ", sign='" + sign + '\'' +
                 '}';
-    }
-
-    @Override
-    public CurrencyDTO getDTOFormat() {
-        return new CurrencyDTO(getId(), getCode(), getFullName(), getSign());
     }
 }

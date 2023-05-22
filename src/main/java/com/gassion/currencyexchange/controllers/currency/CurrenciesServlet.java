@@ -2,6 +2,7 @@ package com.gassion.currencyexchange.controllers.currency;
 
 import com.gassion.currencyexchange.entities.Currency;
 import com.gassion.currencyexchange.entities.DTO.CurrencyDTO;
+import com.gassion.currencyexchange.entities.DTO.DTOFactories.CurrencyDTOFactory;
 import com.gassion.currencyexchange.entities.factories.CurrencyFactory;
 import com.gassion.currencyexchange.service.CurrencyService;
 import com.gassion.currencyexchange.utils.OutResponse;
@@ -24,7 +25,7 @@ public class CurrenciesServlet extends HttpServlet {
         try {
             List<Currency> currencies = CurrencyService.getAllCurrenciesRequest();
 
-            List<CurrencyDTO> currenciesDTO = ValidateUtils.getDTOFormat(currencies);
+            List<CurrencyDTO> currenciesDTO = new CurrencyDTOFactory().getFromModel(currencies);
             String currenciesDTOJson = GSON.toJson(currenciesDTO);
 
             OutResponse.setResponse(response, HttpServletResponse.SC_OK, currenciesDTOJson);
@@ -40,7 +41,7 @@ public class CurrenciesServlet extends HttpServlet {
             Currency currency  = CurrencyFactory.getInUrl(request.getParameterMap());
 
             Currency addedCurrency = CurrencyService.addCurrency(currency);
-            CurrencyDTO addedCurrencyDTO = addedCurrency.getDTOFormat();
+            CurrencyDTO addedCurrencyDTO = (CurrencyDTO) new CurrencyDTOFactory().getFromModel(addedCurrency);
             String addedCurrencyDTOJson = GSON.toJson(addedCurrencyDTO);
 
             OutResponse.setResponse(response, HttpServletResponse.SC_OK, addedCurrencyDTOJson);

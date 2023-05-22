@@ -1,5 +1,6 @@
 package com.gassion.currencyexchange.controllers.exchangeRates;
 
+import com.gassion.currencyexchange.entities.DTO.DTOFactories.ExchangeRateDTOFactory;
 import com.gassion.currencyexchange.entities.DTO.ExchangeRateDTO;
 import com.gassion.currencyexchange.entities.ExchangeRate;
 import com.gassion.currencyexchange.entities.factories.ExchangeRateFactory;
@@ -22,7 +23,7 @@ public class ExchangeRatesServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             List<ExchangeRate> exchangeRate = ExchangeRateService.getAllExchangeRate();
-            List<ExchangeRateDTO> exchangeRateDTOS = ValidateUtils.getDTOFormat(exchangeRate);
+            List<ExchangeRateDTO> exchangeRateDTOS = new ExchangeRateDTOFactory().getFromModel(exchangeRate);
             String exchangeRateDTOSJson = GSON.toJson(exchangeRateDTOS);
 
             OutResponse.setResponse(response, HttpServletResponse.SC_OK, exchangeRateDTOSJson);
@@ -39,7 +40,7 @@ public class ExchangeRatesServlet extends HttpServlet {
             String exchangeRateCode = request.getParameterMap().get("baseCurrencyCode")[0] + request.getParameterMap().get("targetCurrencyCode")[0];
 
             ExchangeRate addedExchangeRate = ExchangeRateService.addExchangeRate(exchangeRate,  exchangeRateCode);
-            ExchangeRateDTO addedExchangeRateDTO = addedExchangeRate.getDTOFormat();
+            ExchangeRateDTO addedExchangeRateDTO = (ExchangeRateDTO) new ExchangeRateDTOFactory().getFromModel(exchangeRate);
             String addedExchangeRateDTOJson = GSON.toJson(addedExchangeRateDTO);
 
             OutResponse.setResponse(response, HttpServletResponse.SC_OK, addedExchangeRateDTOJson);

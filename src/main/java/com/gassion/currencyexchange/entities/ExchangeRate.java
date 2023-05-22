@@ -1,15 +1,9 @@
 package com.gassion.currencyexchange.entities;
 
-import com.gassion.currencyexchange.DAO.CurrencyDAO;
-import com.gassion.currencyexchange.DAO.JsonPresent;
-import com.gassion.currencyexchange.entities.DTO.CurrencyDTO;
-import com.gassion.currencyexchange.entities.DTO.ExchangeRateDTO;
-
 import java.math.BigDecimal;
-import java.sql.SQLException;
 import java.util.Objects;
 
-public class ExchangeRate implements JsonPresent<ExchangeRateDTO> {
+public class ExchangeRate extends Model {
     private final int id;
     private final int baseCurrencyId;
     private final int targetCurrencyId;
@@ -72,19 +66,5 @@ public class ExchangeRate implements JsonPresent<ExchangeRateDTO> {
                 ", targetCurrencyId=" + targetCurrencyId +
                 ", rate=" + rate +
                 '}';
-    }
-
-    @Override
-    public ExchangeRateDTO getDTOFormat() {
-        CurrencyDTO baseCurrency = null;
-        CurrencyDTO targetCurrency = null;
-        try {
-            baseCurrency = new CurrencyDAO().getById(getBaseCurrencyId()).getDTOFormat();
-            targetCurrency = new CurrencyDAO().getById(getTargetCurrencyId()).getDTOFormat();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return new ExchangeRateDTO(getId(), baseCurrency, targetCurrency, getRate());
     }
 }

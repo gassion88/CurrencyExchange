@@ -3,6 +3,7 @@ package com.gassion.currencyexchange.service;
 import com.gassion.currencyexchange.DAO.CurrencyDAO;
 import com.gassion.currencyexchange.DAO.ExchangeRateDAO;
 import com.gassion.currencyexchange.entities.DTO.CurrencyDTO;
+import com.gassion.currencyexchange.entities.DTO.DTOFactories.CurrencyDTOFactory;
 import com.gassion.currencyexchange.entities.DTO.ExchangeDTO;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -16,8 +17,8 @@ public class ExchangeService {
         BigDecimal rate = findExchangeRate(baseCurrencyCode, targetCurrencyCode);
         BigDecimal convertedAmount = rate.multiply(amount);
 
-        CurrencyDTO baseCurrencyDTO = new CurrencyDAO().get(baseCurrencyCode).getDTOFormat();
-        CurrencyDTO targetCurrencyDTO = new CurrencyDAO().get(targetCurrencyCode).getDTOFormat();
+        CurrencyDTO baseCurrencyDTO = (CurrencyDTO) new CurrencyDTOFactory().getFromModel(new CurrencyDAO().get(baseCurrencyCode));
+        CurrencyDTO targetCurrencyDTO = (CurrencyDTO) new CurrencyDTOFactory().getFromModel(new CurrencyDAO().get(targetCurrencyCode));
 
         return new ExchangeDTO(baseCurrencyDTO, targetCurrencyDTO, rate, amount, convertedAmount);
     }

@@ -2,6 +2,7 @@ package com.gassion.currencyexchange.controllers.currency;
 
 import com.gassion.currencyexchange.entities.Currency;
 import com.gassion.currencyexchange.entities.DTO.CurrencyDTO;
+import com.gassion.currencyexchange.entities.DTO.DTOFactories.CurrencyDTOFactory;
 import com.gassion.currencyexchange.service.CurrencyService;
 import com.gassion.currencyexchange.utils.OutResponse;
 import com.gassion.currencyexchange.utils.Strings;
@@ -24,7 +25,7 @@ public class CurrencyServlet extends HttpServlet {
             String currencyCode  = request.getPathInfo().split("/")[1];
 
             Currency currency = CurrencyService.getCurrencyByCodeRequest(currencyCode);
-            CurrencyDTO currencyDTO = currency.getDTOFormat();
+            CurrencyDTO currencyDTO = (CurrencyDTO) new CurrencyDTOFactory().getFromModel(currency);
             String currencyDTOJson = GSON.toJson(currencyDTO);
 
             OutResponse.setResponse(response, HttpServletResponse.SC_OK, currencyDTOJson);
@@ -47,7 +48,7 @@ public class CurrencyServlet extends HttpServlet {
             String currencyCode = request.getPathInfo().split("/")[1];
 
             Currency currency =  CurrencyService.deleteCurrencyByCodeRequest(currencyCode);
-            CurrencyDTO currencyDTO = currency.getDTOFormat();
+            CurrencyDTO currencyDTO = (CurrencyDTO) new CurrencyDTOFactory().getFromModel(currency);
             String currencyDTOJson = GSON.toJson(currencyDTO);
 
             OutResponse.setResponse(response, HttpServletResponse.SC_OK, currencyDTOJson);

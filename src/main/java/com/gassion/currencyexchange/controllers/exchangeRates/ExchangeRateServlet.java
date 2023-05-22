@@ -1,5 +1,8 @@
 package com.gassion.currencyexchange.controllers.exchangeRates;
 
+import com.gassion.currencyexchange.entities.DTO.CurrencyDTO;
+import com.gassion.currencyexchange.entities.DTO.DTOFactories.CurrencyDTOFactory;
+import com.gassion.currencyexchange.entities.DTO.DTOFactories.ExchangeRateDTOFactory;
 import com.gassion.currencyexchange.entities.DTO.ExchangeRateDTO;
 import com.gassion.currencyexchange.entities.ExchangeRate;
 import com.gassion.currencyexchange.service.ExchangeRateService;
@@ -24,7 +27,7 @@ public class ExchangeRateServlet extends HttpServlet {
             String exchangeRateCode = request.getPathInfo().split("/")[1];
 
             ExchangeRate exchangeRate = ExchangeRateService.getExchangeRateByCodeRequest(exchangeRateCode);
-            ExchangeRateDTO exchangeRateDTO = exchangeRate.getDTOFormat();
+            ExchangeRateDTO exchangeRateDTO = (ExchangeRateDTO) new ExchangeRateDTOFactory().getFromModel(exchangeRate);
             String exchangeRateDTOJson = GSON.toJson(exchangeRateDTO);
 
             OutResponse.setResponse(response, HttpServletResponse.SC_OK, exchangeRateDTOJson);
@@ -58,7 +61,7 @@ public class ExchangeRateServlet extends HttpServlet {
             String rate = request.getParameterMap().get("rate")[0];
 
             ExchangeRate exchangeRate = ExchangeRateService.patchExchangeRateByCodeRequest(exchangeRateCode, rate);
-            ExchangeRateDTO exchangeRateDTO = exchangeRate.getDTOFormat();
+            ExchangeRateDTO exchangeRateDTO = (ExchangeRateDTO) new ExchangeRateDTOFactory().getFromModel(exchangeRate);
             String exchangeRateDTOJson = GSON.toJson(exchangeRateDTO);
 
             OutResponse.setResponse(response, HttpServletResponse.SC_OK, exchangeRateDTOJson);
