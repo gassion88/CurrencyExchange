@@ -14,7 +14,7 @@ public class SQLiteConnection extends DBConnection{
     private static String dbUrl;
     private static Connection connection;
 
-    public static Connection getConnection() {
+    public Connection getConnection() {
         if (connection == null) {
             setProperties();
 

@@ -5,7 +5,7 @@ import com.gassion.currencyexchange.DB.SQLiteConnection;
 import java.sql.Connection;
 
 public class DBUtils {
-    public static Connection connection = SQLiteConnection.getConnection();
+    public static Connection connection = new SQLiteConnection().getConnection();
     public static final String SELECT = "SELECT * FROM %s WHERE %s = ?;";
     public static final String SELECT_EXCHANGE_RATE = """
             Select * FROM ExchangeRates
