@@ -19,5 +19,5 @@ public class ExchangeRate extends Model {
     private final int targetCurrencyId;
 
     private BigDecimal rate;
-    
+
 }

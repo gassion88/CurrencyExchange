@@ -7,6 +7,7 @@ import com.gassion.currencyexchange.service.CurrencyService;
 import com.gassion.currencyexchange.utils.OutResponse;
 import com.gassion.currencyexchange.utils.Strings;
 import com.gassion.currencyexchange.utils.ValidateUtils;
+import com.gassion.currencyexchange.utils.error.NotMatchRequestParamException;
 import com.google.gson.Gson;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -31,6 +32,8 @@ public class CurrencyServlet extends HttpServlet {
             OutResponse.setResponse(response, HttpServletResponse.SC_OK, currencyDTOJson);
         } catch (SQLException e) {
             OutResponse.setResponse(response, e.getErrorCode(), GSON.toJson(e.getMessage()));
+        } catch (NotMatchRequestParamException s) {
+            OutResponse.setResponse(response, s.getErrorCode(), s.getMessage());
         } catch (Exception s) {
             OutResponse.setResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, GSON.toJson(Strings.ERROR));
         }
@@ -54,7 +57,9 @@ public class CurrencyServlet extends HttpServlet {
             OutResponse.setResponse(response, HttpServletResponse.SC_OK, currencyDTOJson);
         } catch (SQLException e) {
             OutResponse.setResponse(response, e.getErrorCode(), GSON.toJson(e.getMessage()));
-        }  catch (Exception s) {
+        }  catch (NotMatchRequestParamException s) {
+            OutResponse.setResponse(response, s.getErrorCode(), s.getMessage());
+        } catch (Exception s) {
             OutResponse.setResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, GSON.toJson(Strings.ERROR));
         }
     }

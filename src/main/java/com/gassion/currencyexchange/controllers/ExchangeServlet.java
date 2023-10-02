@@ -4,6 +4,7 @@ import com.gassion.currencyexchange.entities.DTO.ExchangeDTO;
 import com.gassion.currencyexchange.service.ExchangeService;
 import com.gassion.currencyexchange.utils.OutResponse;
 import com.gassion.currencyexchange.utils.ValidateUtils;
+import com.gassion.currencyexchange.utils.error.NotMatchRequestParamException;
 import com.google.gson.Gson;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -26,6 +27,8 @@ public class ExchangeServlet extends HttpServlet {
             String exchangeDTOJson = GSON.toJson(exchangeDTO);
 
             OutResponse.setResponse(response, HttpServletResponse.SC_OK, exchangeDTOJson);
+        } catch (NotMatchRequestParamException s) {
+            OutResponse.setResponse(response, s.getErrorCode(), s.getMessage());
         } catch (Exception e) {
             OutResponse.setResponse(response, HttpServletResponse.SC_NOT_FOUND, """
                                                                             {
